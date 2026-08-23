@@ -1,0 +1,582 @@
+[
+  {
+    "id": "esc-interrupt",
+    "topic": "cockpit",
+    "title": "Esc interrupts — don't spectate a mistake",
+    "body": "Wrong path? Esc now, then redirect with a specific correction. Letting it finish costs time and poisons context with the wrong approach.",
+    "action": "Esc",
+    "triggers": [
+      "Claude took a wrong approach and the user waited it out"
+    ],
+    "src": "PLAYBOOK Play 16"
+  },
+  {
+    "id": "esc-esc-rewind",
+    "topic": "recovery",
+    "title": "Esc twice = rewind menu",
+    "body": "Claude Code auto-checkpoints file changes. Double-Esc on empty input (or /rewind) restores code, conversation, or both. Undo for the session, no git needed.",
+    "action": "Esc Esc",
+    "triggers": [
+      "last few steps went wrong",
+      "user asks to undo edits"
+    ],
+    "src": "mastery/01,10"
+  },
+  {
+    "id": "shift-tab-modes",
+    "topic": "cockpit",
+    "title": "Shift+Tab cycles permission modes",
+    "body": "Cycles the permission modes — normal, auto-accept, plan. Match the leash to the task instead of approving every edit by hand.",
+    "action": "Shift+Tab",
+    "triggers": [
+      "user approves many edits one by one"
+    ],
+    "src": "mastery/01 cockpit"
+  },
+  {
+    "id": "at-mention-files",
+    "topic": "cockpit",
+    "title": "@ points at a file instead of describing it",
+    "body": "Type @ and a path (tab-completes) to put the real file in front of Claude. Describing a file you could reference is wasted breath.",
+    "action": "@path/to/file",
+    "triggers": [
+      "user describes a file in prose"
+    ],
+    "src": "mastery/01 cockpit"
+  },
+  {
+    "id": "bang-bash-mode",
+    "topic": "cockpit",
+    "title": "! runs a shell command yourself",
+    "body": "Start a message with ! to run a command directly, no round-trip through Claude. Best for interactive things like logins that Claude can't drive.",
+    "action": "!git status",
+    "triggers": [
+      "user needs an interactive command or a quick check"
+    ],
+    "src": "mastery/01 cockpit"
+  },
+  {
+    "id": "clear-between-tasks",
+    "topic": "context",
+    "title": "/clear between unrelated tasks",
+    "body": "The most underused habit there is. New task = clean desk. Carrying the last task's corpse into the next one measurably degrades answers.",
+    "action": "/clear",
+    "triggers": [
+      "a new unrelated topic starts in a long session"
+    ],
+    "src": "PLAYBOOK Play 8"
+  },
+  {
+    "id": "context-when-dips",
+    "topic": "context",
+    "title": "/context when quality dips",
+    "body": "Diagnose before you flail. It shows what is actually eating the window — usually one stale file or a dead-end debugging thread.",
+    "action": "/context",
+    "triggers": [
+      "answers get sloppier or repetitive deep in a session"
+    ],
+    "src": "PLAYBOOK Play 8"
+  },
+  {
+    "id": "btw-no-derail",
+    "topic": "context",
+    "title": "/btw asks a side question without derailing",
+    "body": "Answers a side question without adding it to the conversation history, so a mid-task detour costs you no context.",
+    "action": "/btw",
+    "triggers": [
+      "a tangent question comes up mid-task"
+    ],
+    "src": "mastery/03"
+  },
+  {
+    "id": "add-dir",
+    "topic": "context",
+    "title": "/add-dir widens the desk deliberately",
+    "body": "Need a second repo or a sibling folder? Add it explicitly rather than pasting paths and hoping. Deliberate beats accidental scope.",
+    "action": "/add-dir ../other-repo",
+    "triggers": [
+      "work spans two directories"
+    ],
+    "src": "mastery/03"
+  },
+  {
+    "id": "resume-not-eternal",
+    "topic": "context",
+    "title": "Old sessions aren't gone — /resume",
+    "body": "The eternal-session habit is fear of loss. /resume removes the loss, so a bloated session has no excuse. Nostalgia makes Claude dumber.",
+    "action": "/resume",
+    "triggers": [
+      "user avoids /clear because they might need the history"
+    ],
+    "src": "mastery/03"
+  },
+  {
+    "id": "compact-vs-clear",
+    "topic": "context",
+    "title": "/compact keeps the thread, /clear drops it",
+    "body": "Mid-task and running long? /compact compresses and continues. Task finished? /clear — compaction still carries the old task's shape forward.",
+    "action": "/compact",
+    "triggers": [
+      "context is filling up but the task isn't done"
+    ],
+    "src": "mastery/03"
+  },
+  {
+    "id": "plan-before-build",
+    "topic": "planning",
+    "title": "Plan first, then read the plan like a reviewer",
+    "body": "The plan is the cheapest place to catch a mistake. Fixing a plan is a sentence; fixing finished work is a rewrite.",
+    "action": "Shift+Tab to plan mode",
+    "triggers": [
+      "a multi-file or non-trivial task starts"
+    ],
+    "src": "PLAYBOOK Play 9"
+  },
+  {
+    "id": "correction-to-claude-md",
+    "topic": "memory",
+    "title": "Turn every correction into a CLAUDE.md line",
+    "body": "Do not just fix it — write the rule down so it never recurs. Over weeks this compounds into a sharp description of how you work.",
+    "action": "add a line to CLAUDE.md",
+    "triggers": [
+      "user corrects the same class of mistake twice"
+    ],
+    "src": "PLAYBOOK Play 10"
+  },
+  {
+    "id": "user-level-claude-md",
+    "topic": "memory",
+    "title": "Global facts go in ~/.claude/CLAUDE.md",
+    "body": "\"I'm on Windows/PowerShell\", \"be concise\", \"say verified vs assumed\" belong once at user level, not copy-pasted into every repo's CLAUDE.md.",
+    "action": "~/.claude/CLAUDE.md",
+    "triggers": [
+      "user re-explains their environment in a new project"
+    ],
+    "src": "mastery/01"
+  },
+  {
+    "id": "init-then-edit",
+    "topic": "memory",
+    "title": "/init writes the first CLAUDE.md for you",
+    "body": "Let it draft the project facts, then add your own rules on top. Starting from blank is the reason most projects never get one.",
+    "action": "/init",
+    "triggers": [
+      "a project has no CLAUDE.md"
+    ],
+    "src": "course m27"
+  },
+  {
+    "id": "settings-three-scopes",
+    "topic": "memory",
+    "title": "Three settings scopes, three audiences",
+    "body": "~/.claude/settings.json = you everywhere. .claude/settings.json = this project, everyone (commit it). .claude/settings.local.json = just you.",
+    "action": ".claude/settings.local.json",
+    "triggers": [
+      "a permission or env var needs to be saved"
+    ],
+    "src": "mastery/01"
+  },
+  {
+    "id": "truth-procedure-law",
+    "topic": "memory",
+    "title": "Fact → CLAUDE.md, procedure → skill, law → hook",
+    "body": "A procedure stuffed into CLAUDE.md costs tokens every session; an \"always do X\" prompt gets forgotten — that is a hook's job.",
+    "triggers": [
+      "user is deciding where to put a rule"
+    ],
+    "src": "course cheatsheet m27"
+  },
+  {
+    "id": "skill-reflex",
+    "topic": "skills",
+    "title": "\"There's probably a skill for this\"",
+    "body": "Don't memorize the catalog. When a task feels specialized, structured, or repetitive, pause and ask. Type / to see what's actually installed.",
+    "action": "/",
+    "triggers": [
+      "a task feels specialized or repetitive"
+    ],
+    "src": "mastery/05"
+  },
+  {
+    "id": "plugin-before-building",
+    "topic": "skills",
+    "title": "Check /plugin before building from scratch",
+    "body": "Before writing a skill or hook yourself, look whether a ready one exists. Marketplaces already cover most common workflows.",
+    "action": "/plugin",
+    "triggers": [
+      "user is about to build a skill or hook"
+    ],
+    "src": "course m31"
+  },
+  {
+    "id": "command-is-skill",
+    "topic": "skills",
+    "title": "Slash commands and skills are the same thing now",
+    "body": "`.claude/commands/deploy.md` and `.claude/skills/deploy/SKILL.md` both make /deploy. The real axis is who invokes it — `disable-model-invocation: true` for manual-only.",
+    "triggers": [
+      "user asks whether to make a command or a skill"
+    ],
+    "src": "course m28"
+  },
+  {
+    "id": "bottle-repeated-prompt",
+    "topic": "skills",
+    "title": "Bottle any prompt you retype",
+    "body": "\"Write a commit message for this\", \"review my changes\" — a prompt you rewrite constantly is a tax you pay every time. A slash command pays it once.",
+    "triggers": [
+      "user types a near-identical prompt a third time"
+    ],
+    "src": "mastery/04"
+  },
+  {
+    "id": "subagents-for-mess",
+    "topic": "subagents",
+    "title": "\"Use subagents\" to keep your context clean",
+    "body": "Big exploratory jobs flood your window with noise. A subagent works in its own context and hands back only the conclusion.",
+    "action": "\"...use subagents\"",
+    "triggers": [
+      "a broad search across many files is starting"
+    ],
+    "src": "mastery/07"
+  },
+  {
+    "id": "parallel-sessions",
+    "topic": "subagents",
+    "title": "Run parallel sessions for independent tasks",
+    "body": "Two unrelated jobs don't belong in one session fighting for the same context window. Open a second terminal.",
+    "triggers": [
+      "two unrelated tasks are queued"
+    ],
+    "src": "PLAYBOOK Part 6"
+  },
+  {
+    "id": "hooks-are-laws",
+    "topic": "automation",
+    "title": "\"Always do X\" is a hook, not a prompt",
+    "body": "\"Run the linter after every edit\" shouldn't be a request Claude occasionally forgets — it should be a law the harness enforces. That's what hooks are.",
+    "triggers": [
+      "user repeats a standing instruction"
+    ],
+    "src": "mastery/08"
+  },
+  {
+    "id": "automate-when-stable",
+    "topic": "automation",
+    "title": "Automate only after the shape stops moving",
+    "body": "A hook, loop, or routine earns its keep once a task is stable and repeated. Automating something still changing just creates a rigid thing to fight.",
+    "triggers": [
+      "user wants to automate a first-time workflow"
+    ],
+    "src": "mastery/08 trap"
+  },
+  {
+    "id": "routines-while-away",
+    "topic": "automation",
+    "title": "Routines run while you're not there",
+    "body": "\"Every weekday 8am, summarize what changed\" is a scheduled agent, not something you should be awake for. Perfect for briefings and watchers.",
+    "action": "/schedule",
+    "triggers": [
+      "user does the same check every morning"
+    ],
+    "src": "mastery/08"
+  },
+  {
+    "id": "loop-command",
+    "topic": "automation",
+    "title": "/loop repeats a task on an interval",
+    "body": "For polling something that changes on its own — a CI run, a deploy, a queue. Omit the interval and Claude paces itself.",
+    "action": "/loop 5m <prompt>",
+    "triggers": [
+      "user is manually re-checking an external process"
+    ],
+    "src": "mastery/08"
+  },
+  {
+    "id": "model-ladder",
+    "topic": "models",
+    "title": "Model choice is per-task, not per-life",
+    "body": "Haiku = fast/simple, Sonnet = daily driver, Opus = hard/high-stakes, Fable = enormous. Switch freely mid-session as the work changes.",
+    "action": "/model",
+    "triggers": [
+      "a session shifts between trivial and hard work"
+    ],
+    "src": "PLAYBOOK Play 1-2"
+  },
+  {
+    "id": "climb-when-struggling",
+    "topic": "models",
+    "title": "Climb when it visibly struggles",
+    "body": "Going in circles, missing cross-file implications, or confidently wrong twice? That's the signal to move up a model — not to re-prompt louder.",
+    "triggers": [
+      "the same problem fails twice"
+    ],
+    "src": "PLAYBOOK Play 2"
+  },
+  {
+    "id": "effort-dial",
+    "topic": "models",
+    "title": "Effort is a second, separate dial",
+    "body": "Model = how big a brain. Effort = how long it thinks. low for trivial, xhigh for hard agentic coding, max for must-not-fail. Max on everything is just slower.",
+    "triggers": [
+      "an answer feels shallow on a hard problem"
+    ],
+    "src": "PLAYBOOK Play 3"
+  },
+  {
+    "id": "fast-mode",
+    "topic": "models",
+    "title": "/fast speeds up Opus without downgrading it",
+    "body": "Same brain, quicker delivery. When you want speed but the task still deserves Opus, that's the lever — not dropping down the ladder.",
+    "action": "/fast",
+    "triggers": [
+      "user wants speed on a task that needs Opus"
+    ],
+    "src": "PLAYBOOK Play 2"
+  },
+  {
+    "id": "fluent-not-correct",
+    "topic": "trust",
+    "title": "Fluent is not correct",
+    "body": "Risk spikes on specific checkable claims: API signatures, flags, versions, citations. Uniform confidence across easy and hard claims is itself a tell.",
+    "triggers": [
+      "Claude states an exact API, flag, or citation"
+    ],
+    "src": "PLAYBOOK Play 4"
+  },
+  {
+    "id": "ask-for-source",
+    "topic": "trust",
+    "title": "Ask for the source before the answer",
+    "body": "\"Quote the exact lines you are basing this on.\" Grounds the answer in real text. If it cannot produce the quote, that is your answer.",
+    "triggers": [
+      "a factual claim matters and is checkable"
+    ],
+    "src": "PLAYBOOK Play 5"
+  },
+  {
+    "id": "re-ask-fresh",
+    "topic": "trust",
+    "title": "The re-ask test",
+    "body": "Ask the same question in a fresh session with no prior context. Consistency isn't proof of truth, but inconsistency is proof of a problem.",
+    "triggers": [
+      "a suspicious answer needs a second opinion"
+    ],
+    "src": "PLAYBOOK Play 5"
+  },
+  {
+    "id": "permission-to-not-know",
+    "topic": "trust",
+    "title": "Give permission to not know",
+    "body": "\"If you're not sure, say so — I'd rather have 'I don't know' than a confident guess.\" One sentence in CLAUDE.md measurably reduces fabrication.",
+    "action": "put it in CLAUDE.md",
+    "triggers": [
+      "a confident answer turns out to be invented"
+    ],
+    "src": "PLAYBOOK Play 6"
+  },
+  {
+    "id": "code-truth-machine",
+    "topic": "verify",
+    "title": "In code you have a truth machine",
+    "body": "The compiler, the type checker, and the tests don't hallucinate. Don't read generated code and nod — run it. Verification is a keystroke away.",
+    "triggers": [
+      "code is written but not executed"
+    ],
+    "src": "PLAYBOOK Play 7"
+  },
+  {
+    "id": "read-the-diff",
+    "topic": "verify",
+    "title": "Read the diff, don't trust \"done\"",
+    "body": "The visual diff is right there. \"It said it fixed it\" is not verification — the whole point of the loop is that reality referees.",
+    "triggers": [
+      "a change is reported complete"
+    ],
+    "src": "PLAYBOOK Part 6"
+  },
+  {
+    "id": "the-loop",
+    "topic": "verify",
+    "title": "The loop: explore → plan → code → verify → commit → review",
+    "body": "Then /clear and start the next task with a clean desk. Without the loop, AI coding degenerates into generate-and-pray.",
+    "triggers": [
+      "a feature is being built end to end"
+    ],
+    "src": "mastery/10"
+  },
+  {
+    "id": "commit-often",
+    "topic": "git",
+    "title": "Commit often so every change is a cheap revert",
+    "body": "Small frequent commits turn \"it mangled everything\" into \"git reset and try again.\" Work fearlessly because you can undo.",
+    "action": "git commit",
+    "triggers": [
+      "a risky or large change is about to start"
+    ],
+    "src": "PLAYBOOK Play 13"
+  },
+  {
+    "id": "worktree-for-risky",
+    "topic": "git",
+    "title": "Risky experiment → a worktree",
+    "body": "About to let it loose on something you might want to throw away? Branch into a worktree first — your main tree stays untouched either way.",
+    "action": "git worktree add",
+    "triggers": [
+      "an experimental refactor is starting"
+    ],
+    "src": "PLAYBOOK Play 17"
+  },
+  {
+    "id": "two-corrections-stop",
+    "topic": "recovery",
+    "title": "Two corrections haven't landed? Stop arguing",
+    "body": "A third \"no, like I said…\" into a context full of the misunderstanding rarely works. Rewind or /clear and re-ask fresh.",
+    "triggers": [
+      "the same correction is given a third time"
+    ],
+    "src": "PLAYBOOK Play 16"
+  },
+  {
+    "id": "recovery-ladder",
+    "topic": "recovery",
+    "title": "Match the undo to the size of the mistake",
+    "body": "Shallow → raise effort. Degrading → /context then /clear. Last steps wrong → /rewind. Whole approach wrong → git reset. Nuking a session over one bad step wastes good context.",
+    "triggers": [
+      "something went wrong and the fix size is unclear"
+    ],
+    "src": "PLAYBOOK Play 17"
+  },
+  {
+    "id": "usage-gauge",
+    "topic": "cost",
+    "title": "/usage shows what you're actually burning",
+    "body": "Big model + max effort + subagent swarms is a fine choice when chosen. Glance at the gauge after a heavy session so it stays a choice.",
+    "action": "/usage",
+    "triggers": [
+      "after a heavy session or a big fan-out"
+    ],
+    "src": "PLAYBOOK Play 18"
+  },
+  {
+    "id": "specific-not-louder",
+    "topic": "prompting",
+    "title": "Say what was wrong, don't repeat louder",
+    "body": "Volume as strategy is the tourist move. \"Drier tone, cut the last paragraph\" beats re-typing the whole request. Converging beats gambling.",
+    "triggers": [
+      "user re-sends a similar prompt after a miss"
+    ],
+    "src": "PLAYBOOK Play 11"
+  },
+  {
+    "id": "show-an-example",
+    "topic": "prompting",
+    "title": "One example beats a paragraph of description",
+    "body": "When the format matters, paste a sample of the output you want. Describing a shape is strictly worse than showing it.",
+    "triggers": [
+      "output format keeps coming out wrong"
+    ],
+    "src": "PLAYBOOK Play 11"
+  },
+  {
+    "id": "give-the-because",
+    "topic": "prompting",
+    "title": "Give the \"because\"",
+    "body": "The constraint behind the request is what lets Claude decide everything you did not specify. \"Make it fast\" and \"fast because it runs per-keystroke\" are different jobs.",
+    "triggers": [
+      "a request has an unstated constraint"
+    ],
+    "src": "mastery/02"
+  },
+  {
+    "id": "claude-improves-your-prompt",
+    "topic": "prompting",
+    "title": "Use Claude to get better at Claude",
+    "body": "\"Rewrite my prompt to get a better result and tell me what you changed.\" Or \"skill, command, or hook?\" The tool teaches itself if you ask.",
+    "triggers": [
+      "user is unsure how to phrase or where to put something"
+    ],
+    "src": "PLAYBOOK Play 12"
+  },
+  {
+    "id": "paste-screenshots",
+    "topic": "prompting",
+    "title": "Feed it eyes — paste the screenshot",
+    "body": "An error, a UI, a diagram. Describing an image in words when you could paste it is wasted effort and a lossy channel.",
+    "triggers": [
+      "user describes a visual bug or a UI in prose"
+    ],
+    "src": "PLAYBOOK Play 15"
+  },
+  {
+    "id": "right-surface",
+    "topic": "surface",
+    "title": "Right surface, right job",
+    "body": "Codebase → Code. Documents, no terminal → Cowork. Think/write → Chat. Recurring while you sleep → Routine. Forcing every job into your comfort-room is a quiet tax.",
+    "triggers": [
+      "a non-code task is being done in the terminal"
+    ],
+    "src": "PLAYBOOK Play 14"
+  },
+  {
+    "id": "mcp-permission-format",
+    "topic": "mcp",
+    "title": "MCP tool permissions are mcp__server__tool",
+    "body": "`mcp__` prefix, then the name you gave the server at `claude mcp add`, then the tool. /mcp shows which servers are connected and where OAuth is stuck.",
+    "action": "/mcp",
+    "triggers": [
+      "an MCP tool needs allowlisting or a server looks down"
+    ],
+    "src": "course m32 cheatsheet"
+  },
+  {
+    "id": "one-liner-reflex",
+    "topic": "antipattern",
+    "title": "The one-liner reflex",
+    "body": "Firing a vague prompt and taking whatever bounces back. The fix is not a longer prompt — it is naming the goal, the constraint, and what done looks like.",
+    "triggers": [
+      "a vague request gets a generic answer"
+    ],
+    "src": "PLAYBOOK Part 5"
+  },
+  {
+    "id": "eternal-session",
+    "topic": "antipattern",
+    "title": "The eternal session is 80% noise",
+    "body": "Symptom check: if you cannot say in one sentence what this session is about, it is already too full to answer well.",
+    "triggers": [
+      "a session has covered three unrelated topics"
+    ],
+    "src": "PLAYBOOK Part 5"
+  },
+  {
+    "id": "headless-mode",
+    "topic": "automation",
+    "title": "claude -p runs headless, for scripts and CI",
+    "body": "Same agent loop, no TUI. Pipe input in, get output out — that's how Claude Code becomes a step in a pipeline instead of a thing you sit in front of.",
+    "action": "claude -p \"...\"",
+    "triggers": [
+      "a task should run unattended or in CI"
+    ],
+    "src": "course m33"
+  },
+  {
+    "id": "subagent-needs-context",
+    "topic": "subagents",
+    "title": "A subagent cannot see your session",
+    "body": "It starts blind. Give it the paths, the naming conventions, and what a good answer looks like — a vague delegation comes back vague.",
+    "triggers": [
+      "work is about to be delegated to a subagent"
+    ],
+    "src": "mastery/07"
+  },
+  {
+    "id": "explore-before-plan",
+    "topic": "planning",
+    "title": "Make it read before it plans",
+    "body": "\"Read the relevant files and tell me what you found, then stop.\" A plan built on assumptions is a confident plan for the wrong codebase.",
+    "triggers": [
+      "a plan is being written for unfamiliar code"
+    ],
+    "src": "mastery/10"
+  }
+]
