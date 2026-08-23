@@ -69,6 +69,7 @@ Leitner boxes 1–6, intervals `0 / 2 / 6 / 16 / 45 / 120` days. Each session ta
 ## Files
 
 ```
+install.mjs         installer / uninstaller (link + hook registration)
 coach.mjs           scheduler + CLI + hook entrypoint
 tips.json           the tip bank (content)
 digest.md           the Claude-facing lines injected every session
