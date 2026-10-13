@@ -179,3 +179,7 @@ docs/specs/       design notes
 ## Author
 
 Hamed Nasrabadi. Crumbs distilled from my Claude Code course material and checked against the official documentation.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
