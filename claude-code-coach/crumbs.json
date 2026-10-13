@@ -1,0 +1,695 @@
+[
+  {
+    "id": "esc-interrupt",
+    "text": "When Claude heads the wrong way, press Esc to stop it right away, then say what to do instead",
+    "topic": "cockpit",
+    "format": "when",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "esc-esc-rewind",
+    "text": "To undo Claude's last steps, press Esc twice on an empty prompt and restore code, chat, or both",
+    "topic": "recovery",
+    "format": "goal",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/checkpointing"
+  },
+  {
+    "id": "shift-tab-modes",
+    "text": "Press Shift+Tab to switch to accept-edits mode when you're approving every edit by hand",
+    "topic": "cockpit",
+    "format": "key",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/permission-modes"
+  },
+  {
+    "id": "at-mention-files",
+    "text": "Type @ and start a file path to attach the real file instead of describing what's in it",
+    "topic": "cockpit",
+    "format": "key",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "bang-bash-mode",
+    "text": "Start a message with ! to run a shell command yourself, handy for logins and quick checks",
+    "topic": "cockpit",
+    "format": "key",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "clear-between-tasks",
+    "text": "When you start an unrelated task, run /clear so the old task's context doesn't skew answers",
+    "topic": "context",
+    "format": "when",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "context-when-dips",
+    "text": "/context shows what is filling the context window when answers start getting sloppy",
+    "topic": "context",
+    "format": "command",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "btw-no-derail",
+    "text": "/btw <question> answers a side question without adding it to the conversation history",
+    "topic": "context",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "add-dir",
+    "text": "/add-dir <path> lets Claude read and edit a second folder or repo in the same session",
+    "topic": "context",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "resume-not-eternal",
+    "text": "Old sessions aren't lost after /clear: /resume reopens any of them, so start fresh freely",
+    "topic": "context",
+    "format": "fact",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "compact-vs-clear",
+    "text": "To keep a long task going when context fills up, run /compact to summarize history and carry on",
+    "topic": "context",
+    "format": "goal",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "correction-to-claude-md",
+    "text": "When you correct Claude on the same thing twice, add the rule as one line in your CLAUDE.md",
+    "topic": "memory",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/memory"
+  },
+  {
+    "id": "user-level-claude-md",
+    "text": "~/.claude/CLAUDE.md applies to every project, so put your OS and style preferences there once",
+    "topic": "memory",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/memory"
+  },
+  {
+    "id": "init-then-edit",
+    "text": "/init drafts a CLAUDE.md from your codebase, so a new project starts with notes to edit",
+    "topic": "memory",
+    "format": "command",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "settings-three-scopes",
+    "text": ".claude/settings.local.json holds settings just for you in this repo and stays out of git",
+    "topic": "memory",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/settings"
+  },
+  {
+    "id": "skill-reflex",
+    "text": "Type / to list every skill and command you already have before you build something new",
+    "topic": "skills",
+    "format": "key",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/skills"
+  },
+  {
+    "id": "plugin-before-building",
+    "text": "Before you build a skill or hook from scratch, check /plugin; a ready-made one may exist",
+    "topic": "skills",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "command-is-skill",
+    "text": "To make a skill run only when you call it, add disable-model-invocation: true to its frontmatter",
+    "topic": "skills",
+    "format": "goal",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/skills"
+  },
+  {
+    "id": "bottle-repeated-prompt",
+    "text": "To stop retyping a prompt, save it as .claude/skills/<name>/SKILL.md and run it as /<name>",
+    "topic": "skills",
+    "format": "goal",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/skills"
+  },
+  {
+    "id": "subagents-for-mess",
+    "text": "Before a big search across many files, add \"use subagents\" so the noise stays out of your context",
+    "topic": "subagents",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/sub-agents"
+  },
+  {
+    "id": "parallel-sessions",
+    "text": "Two unrelated tasks run better in two separate sessions than sharing one context window",
+    "topic": "subagents",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/common-workflows"
+  },
+  {
+    "id": "hooks-are-laws",
+    "text": "A rule you repeat in chat can be forgotten; /hooks lets the harness enforce it every time",
+    "topic": "automation",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/hooks"
+  },
+  {
+    "id": "routines-while-away",
+    "text": "/schedule sets up a routine that runs a recurring check for you, like a morning summary",
+    "topic": "automation",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/scheduled-tasks"
+  },
+  {
+    "id": "loop-command",
+    "text": "/loop 5m <prompt> re-runs a check every 5 minutes, useful while waiting on CI or a deploy",
+    "topic": "automation",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/scheduled-tasks"
+  },
+  {
+    "id": "model-ladder",
+    "text": "/model switches models mid-session, so simple tasks don't have to run on your biggest model",
+    "topic": "models",
+    "format": "command",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "climb-when-struggling",
+    "text": "When the same fix fails twice, switch to a stronger model with /model instead of re-prompting",
+    "topic": "models",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "effort-dial",
+    "text": "/effort high makes Claude think longer before replying when a hard problem gets a shallow answer",
+    "topic": "models",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "fast-mode",
+    "text": "/fast turns on faster output while keeping the same model, for when you want Opus sooner",
+    "topic": "models",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "ask-for-source",
+    "text": "When Claude names an exact API, flag, or version, ask it to quote the doc lines it's based on",
+    "topic": "trust",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "re-ask-fresh",
+    "text": "To check a doubtful answer, ask the same question in a fresh session and compare the two",
+    "topic": "trust",
+    "format": "goal",
+    "level": 2,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "permission-to-not-know",
+    "text": "For fewer confident guesses, add \"If you're unsure, say so\" as a line in your CLAUDE.md",
+    "topic": "trust",
+    "format": "goal",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/memory"
+  },
+  {
+    "id": "code-truth-machine",
+    "text": "Before you accept new code, ask Claude to run the tests or the build, not just read it",
+    "topic": "verify",
+    "format": "when",
+    "level": 1,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "read-the-diff",
+    "text": "/diff shows exactly what changed in your working tree, so you can check before trusting \"done\"",
+    "topic": "verify",
+    "format": "command",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "commit-often",
+    "text": "Before a big change, commit first so undoing it is a single git command",
+    "topic": "git",
+    "format": "when",
+    "level": 1,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "worktree-for-risky",
+    "text": "claude --worktree <name> starts a risky experiment in its own checkout, leaving main untouched",
+    "topic": "git",
+    "format": "command",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/worktrees"
+  },
+  {
+    "id": "two-corrections-stop",
+    "text": "When a correction hasn't landed twice, press Esc twice to rewind and ask again from scratch",
+    "topic": "recovery",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/checkpointing"
+  },
+  {
+    "id": "usage-gauge",
+    "text": "/usage shows how much of your usage a session consumed, worth a look after heavy work",
+    "topic": "cost",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "specific-not-louder",
+    "text": "To fix a result that missed, say exactly what was wrong instead of resending the same request",
+    "topic": "prompting",
+    "format": "goal",
+    "level": 1,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "show-an-example",
+    "text": "One pasted example of the output you want beats a whole paragraph describing the format",
+    "topic": "prompting",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "give-the-because",
+    "text": "A reason like \"keep it fast, it runs on every keystroke\" lets Claude make the right calls",
+    "topic": "prompting",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "claude-improves-your-prompt",
+    "text": "To phrase a request better, ask Claude to rewrite your prompt and explain what it changed",
+    "topic": "prompting",
+    "format": "goal",
+    "level": 2,
+    "surface": "both",
+    "src": "course material"
+  },
+  {
+    "id": "paste-screenshots",
+    "text": "Paste a screenshot with Ctrl+V (Alt+V on Windows) instead of describing a visual bug in words",
+    "topic": "prompting",
+    "format": "key",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "mcp-permission-format",
+    "text": "MCP server not working? /mcp shows which servers are connected and which need sign-in",
+    "topic": "mcp",
+    "format": "question",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "headless-mode",
+    "text": "claude -p \"<prompt>\" runs Claude once and prints the result, ready for scripts and CI",
+    "topic": "automation",
+    "format": "command",
+    "level": 3,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/headless"
+  },
+  {
+    "id": "subagent-needs-context",
+    "text": "A subagent can't see this chat, so give it file paths and say what a good answer looks like",
+    "topic": "subagents",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/sub-agents"
+  },
+  {
+    "id": "explore-before-plan",
+    "text": "Before Claude plans changes in unfamiliar code, ask it to read and summarize the code first",
+    "topic": "planning",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/common-workflows"
+  },
+  {
+    "id": "continue-last",
+    "text": "Closed the terminal by accident? claude --continue reopens the last session in this folder",
+    "topic": "sessions",
+    "format": "question",
+    "level": 1,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/common-workflows"
+  },
+  {
+    "id": "ctrl-r-history",
+    "text": "Press Ctrl+R to search your prompt history and reuse something you already typed once",
+    "topic": "keys",
+    "format": "key",
+    "level": 1,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "ctrl-g-editor",
+    "text": "Press Ctrl+G to write a long prompt in your own text editor instead of the input box",
+    "topic": "keys",
+    "format": "key",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "ctrl-s-stash",
+    "text": "Press Ctrl+S to stash your draft, ask something else, then press it again to bring it back",
+    "topic": "keys",
+    "format": "key",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "ctrl-b-background",
+    "text": "Press Ctrl+B to send a long-running command to the background and keep working with Claude",
+    "topic": "keys",
+    "format": "key",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "ctrl-t-tasks",
+    "text": "Press Ctrl+T to show or hide Claude's task checklist when you lose track of a big task",
+    "topic": "keys",
+    "format": "key",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "ctrl-o-transcript",
+    "text": "Press Ctrl+O to open the full transcript and see exactly what Claude ran and read",
+    "topic": "keys",
+    "format": "key",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "queue-messages",
+    "text": "You can type while Claude works: press Enter and your message is queued for the next turn",
+    "topic": "cockpit",
+    "format": "fact",
+    "level": 1,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/interactive-mode"
+  },
+  {
+    "id": "branch-conversation",
+    "text": "/branch copies the conversation so you can try another direction without losing this one",
+    "topic": "sessions",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "subtask",
+    "text": "/subtask <task> hands a side job to a subagent and brings only the result back here",
+    "topic": "subagents",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "background-session",
+    "text": "/background detaches this session to keep running; check on it later with claude agents",
+    "topic": "sessions",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "rename-session",
+    "text": "/rename <name> labels this session so you can find it quickly later in /resume",
+    "topic": "sessions",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "recap",
+    "text": "/recap gives a one-line summary of where this session stands, handy after a break",
+    "topic": "sessions",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "copy-response",
+    "text": "/copy puts Claude's last answer on your clipboard; /copy 2 grabs the one before it",
+    "topic": "sessions",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "cd-session",
+    "text": "/cd <path> moves this whole session to another folder without losing the conversation",
+    "topic": "sessions",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "export-session",
+    "text": "/export <file> saves the whole conversation as plain text, ready to share or archive",
+    "topic": "sessions",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "code-review",
+    "text": "Before you open a PR, run /code-review to check the changes for bugs; add --fix to apply fixes",
+    "topic": "verify",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "simplify",
+    "text": "/simplify reviews your changes for cleanup and applies it; it doesn't hunt for bugs",
+    "topic": "verify",
+    "format": "command",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "security-review",
+    "text": "When a change touches auth, user input, or secrets, run /security-review on the branch",
+    "topic": "verify",
+    "format": "when",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "batch",
+    "text": "/batch <instruction> splits a change across many files into parallel agents in worktrees",
+    "topic": "automation",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "worktreeinclude",
+    "text": "New worktree missing your .env? List it in .worktreeinclude to copy it into each one",
+    "topic": "git",
+    "format": "question",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/worktrees"
+  },
+  {
+    "id": "claude-md-imports",
+    "text": "To slim down a long CLAUDE.md, move sections into files and pull them in with @path/to/file",
+    "topic": "memory",
+    "format": "goal",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/memory"
+  },
+  {
+    "id": "rules-dir",
+    "text": "Rules in .claude/rules/ with a paths: field load only when Claude works on matching files",
+    "topic": "memory",
+    "format": "fact",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/memory"
+  },
+  {
+    "id": "rewind-limits",
+    "text": "Rewind can't undo rm, mv, or cp run in Bash, so commit before Claude deletes files",
+    "topic": "recovery",
+    "format": "fact",
+    "level": 2,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/checkpointing"
+  },
+  {
+    "id": "tui-fullscreen",
+    "text": "Terminal flickering on long output? /tui fullscreen switches to the flicker-free renderer",
+    "topic": "interface",
+    "format": "question",
+    "level": 3,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "statusline",
+    "text": "/statusline sets up a status bar below the prompt, for example to show model and context use",
+    "topic": "interface",
+    "format": "command",
+    "level": 3,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/statusline"
+  },
+  {
+    "id": "terminal-setup",
+    "text": "Shift+Enter won't add a new line in VS Code or Cursor? /terminal-setup installs the keybinding",
+    "topic": "interface",
+    "format": "question",
+    "level": 2,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "import-config",
+    "text": "Coming from Codex, Gemini CLI, or Cursor? /import brings your existing configuration over",
+    "topic": "interface",
+    "format": "question",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "remote-control",
+    "text": "/remote-control lets you continue this session from claude.ai when you step away from your desk",
+    "topic": "sessions",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "config-set",
+    "text": "/config <key>=<value> changes a setting in one line without opening the settings menu",
+    "topic": "interface",
+    "format": "command",
+    "level": 3,
+    "surface": "both",
+    "src": "https://code.claude.com/docs/en/commands"
+  },
+  {
+    "id": "bare-ci",
+    "text": "claude -p --bare skips your hooks, skills, and CLAUDE.md so CI runs stay repeatable",
+    "topic": "automation",
+    "format": "command",
+    "level": 3,
+    "surface": "terminal",
+    "src": "https://code.claude.com/docs/en/headless"
+  }
+]
