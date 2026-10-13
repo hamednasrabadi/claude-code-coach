@@ -1,6 +1,6 @@
-# Context — the one gauge that predicts answer quality
+# Context: the one gauge that predicts answer quality
 
-Source: `mastery/03-context.md`, PLAYBOOK Play 8.
+Habits from the author's course notes. Commands checked against code.claude.com/docs/en/commands on 2026-10-13.
 
 ## The mental model
 
@@ -12,16 +12,16 @@ Treat it as a **budget, not a bucket**.
 
 1. **`/context`** — diagnose first. Usually one thing is hogging the window.
 2. **`/btw`** — ask a side question without dragging it into the main thread.
-3. **`/compact`** — compress and keep going. Right when the *task* isn't done.
+3. **`/compact [instructions]`** — summarize and keep going. Pass instructions to say what the summary must keep. Right when the *task* isn't done.
 4. **`/clear`** — wipe. Right when the *task is* done. Compaction still carries the old task's shape forward; clear doesn't.
-5. **`/add-dir`** — widen the desk on purpose rather than by accident.
+5. **`/add-dir <path>`** — widen the desk on purpose rather than by accident. `/cd <path>` moves the whole session instead.
 6. **Subagents** — "find every place we handle authentication; use subagents." The exploration noise lands in *their* context, and only the conclusion comes back to yours.
 
 ## The habit
 
 > Finish a task and start an unrelated one → **`/clear`.** Don't carry the corpse of the last task into the next one.
 
-The eternal-session habit is fear of losing history. `/resume` removes the loss. Once that's true, keeping a bloated session alive is nostalgia, and nostalgia makes Claude dumber.
+The eternal-session habit is fear of losing history. `/resume` removes the loss, and `/rename <name>` makes a session easy to find again. Once that's true, keeping a bloated session alive is nostalgia, and nostalgia makes Claude dumber.
 
 ## The trap
 

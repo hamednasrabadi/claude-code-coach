@@ -1,6 +1,6 @@
 # The loop, verification, recovery, and the dials
 
-Source: `mastery/10-development-loop.md`, PLAYBOOK Parts 1, 2, 4, 5.
+Habits from the author's course notes. Commands checked against code.claude.com/docs (`commands`, `worktrees`, `model-config`) on 2026-10-13.
 
 ## The loop
 
@@ -28,18 +28,18 @@ Prevention: give explicit permission to say "I don't know" — one line in CLAUD
 
 | Symptom | Reach for |
 |---|---|
-| Shallow or rushed on a hard problem | Raise effort / "think harder", re-ask |
+| Shallow or rushed on a hard problem | `/effort high` (or higher), then re-ask |
 | Session quality slowly degrading | `/context` to diagnose → `/clear` to cure |
 | The last few steps went wrong | `/rewind` (or Esc Esc) |
 | The whole approach was wrong | `git reset` to the last good commit |
-| It was risky and you knew it | You should have been in a worktree |
+| It was risky and you knew it | Next time, start it in a worktree: `claude --worktree <name>` |
 
 Two companion rules: **interrupt early** — Esc the moment it's heading wrong, because a finished wrong approach also poisons the context. And **if two corrections haven't landed, stop arguing** — a third "no, like I said…" into a context full of the misunderstanding rarely works. Go fresh with what you learned baked into a better prompt.
 
 ## The dials
 
-- **Model** = how big a brain. Haiku (fast/simple) · Sonnet (daily driver) · Opus (hard/high-stakes) · Fable (enormous, long-horizon). Per-task, not per-life.
-- **Effort** = how long it sits and thinks. low for trivial · medium/high for normal · xhigh for hard coding and agentic work · max for must-not-fail.
+- **Model** = how big a brain. Haiku (fast and simple) · Sonnet (daily driver) · Opus (hard, high-stakes) · Fable (the hardest and longest-running tasks). Switch with `/model <alias>`. Per-task, not per-life.
+- **Effort** = how long it sits and thinks, set with `/effort`. `low` for trivial · `medium` or `high` for normal · `xhigh` for hard coding and agentic work · `max` (this session only) for must-not-fail · `auto` to let Claude Code choose.
 - **`/fast`** on Opus: same brain, quicker output.
 - Climb when it visibly struggles (circling, missing cross-file implications, confidently wrong twice). Max effort on everything is just slower for no gain.
 - `/usage` is the gauge. Big model + max effort + subagent swarms is a fine choice *when chosen*.
