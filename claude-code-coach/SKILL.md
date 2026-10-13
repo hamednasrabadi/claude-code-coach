@@ -53,6 +53,6 @@ Every crumb must meet these rules:
 - **One of six formats:** `command` (`/recap gives…`), `key` (`Press Ctrl+R to…`), `when` (`Before a big change, …`), `goal` (`To undo…, press…`), `fact` (`Rewind can't undo…, so…`), or `question` (`Closed the terminal by accident? …`). At most one crumb in eight is a question.
 - **Verified.** Check the command against the official docs before adding it.
 - **Not a built-in tip.** Claude Code already teaches Plan Mode with Shift+Tab and `/config` for the default permission mode.
-- **Fixed text.** Never reword an existing crumb. Claude Code tracks show history by id, and the user recognizes a crumb by its wording. To change one, delete it and add a new id. `test.mjs` fails if an id's text changes.
+- **Fixed text.** Never reword an existing crumb. Claude Code tracks show history by id, and the user recognizes a crumb by its wording. To change one, delete it and add a new id. Leave the old id in `crumbs.lock` so it can never be reused for different text. `test.mjs` fails if an id's text changes.
 
 `level` sets the order for new users: `1` basics show first, `3` advanced show last.
