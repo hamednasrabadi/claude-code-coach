@@ -1,5 +1,3 @@
-# Per-machine spaced-repetition progress — not shared
-claude-code-coach/state.json
 *.tmp
 *.bak
 .superpowers/
