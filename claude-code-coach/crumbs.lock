@@ -76,5 +76,17 @@
   "config-set": "add7cb7a51b3cd29",
   "bare-ci": "23d92471f99d14e0",
   "two-corrections-clear": "acfb5a649d443fd5",
-  "two-corrections-stop": "9b050e18dc70d36f"
+  "two-corrections-stop": "9b050e18dc70d36f",
+  "terminal-esc-esc-rewind": "3f4c04d9580070a1",
+  "terminal-shift-tab-modes": "f52983fcb5f50dfd",
+  "terminal-ctrl-r-history": "bd1a5b2b9b92f6f9",
+  "terminal-ctrl-g-editor": "d2e4297edd8f7d3b",
+  "terminal-ctrl-s-stash": "f0a1269d524dd0d5",
+  "terminal-ctrl-b-background": "dae8c8544a02b446",
+  "terminal-ctrl-t-tasks": "ea5246ab8b9e930f",
+  "terminal-ctrl-o-transcript": "b1994379227c5a1e",
+  "terminal-statusline": "b76374fedfa2490c",
+  "app-permission-menu": "9a7452800dd1a8bc",
+  "app-shortcut-list": "76ab7e56daa67c4d",
+  "app-side-chat": "d865dd7009e0e27e"
 }

@@ -14,7 +14,7 @@ Each tip is called a crumb. It names one key or command and what it does for you
 ## What to expect
 
 - **One line at a time, only while Claude is working.** Nothing is printed into the chat, and no tip interrupts you.
-- **Basics first.** The bank holds 77 crumbs at three levels. New users see the fundamentals before the advanced material.
+- **Basics first.** The bank holds 80 crumbs at three levels. New users see the fundamentals before the advanced material.
 - **Crumbs come back.** After a crumb is shown, it waits at least three sessions, then returns when the others have had their turn. Repetition is what makes them stick.
 - **Claude Code's own tips stay on.** Crumbs share the rotation with the built-in tips, so you still hear about new features.
 - **No cost.** Crumbs use no tokens, run no hook, and add nothing to Claude's context.
@@ -24,7 +24,10 @@ Each tip is called a crumb. It names one key or command and what it does for you
 | Surface | Status |
 |---|---|
 | Terminal (`claude`) | Supported and tested |
-| Desktop app, VS Code, JetBrains | Depends on whether that surface shows spinner tips. The Claude Code docs don't say. If it does, crumbs appear there with no extra setup. |
+| Desktop app (Code tab) | Supported and tested |
+| VS Code, JetBrains | Not tested yet. Crumbs appear there if that surface shows spinner tips. |
+
+Both surfaces read the same tip file. A crumb that only applies to one surface says so, for example `In the terminal, press Ctrl+R to search your prompt history and reuse an earlier prompt`.
 
 ## Requirements
 
@@ -48,7 +51,7 @@ Installing claude-code-coach
   + linked C:\Users\you\.claude\skills\claude-code-coach
   + spinner tips now read C:/src/claude-code-coach/claude-code-coach/try-tips.json
   ~ backed up settings to C:\Users\you\.claude\backups\settings.json.2026-10-13T13-07-55-557Z
-  ✓ 77 crumbs ready
+  ✓ 80 crumbs ready
   ✓ Claude Code 2.1.296 supports crumbs
 
 Done. Start a new Claude Code session; crumbs appear under the spinner while Claude works.
@@ -108,7 +111,7 @@ Crumbs come in a few shapes, chosen to fit the tip:
 | Command | `/recap gives a one-line summary of where this session stands, handy after a break` |
 | Key | `Press Ctrl+R to search your prompt history and reuse something you already typed once` |
 | When | `Before you open a PR, run /code-review to check the changes for bugs; add --fix to apply fixes` |
-| Goal | `To undo Claude's last steps, press Esc twice on an empty prompt and restore code, chat, or both` |
+| Goal | `To keep a long task going when context fills up, run /compact to summarize history and carry on` |
 | Fact | `Rewind can't undo rm, mv, or cp run in Bash, so commit before Claude deletes files` |
 | Question | `Closed the terminal by accident? claude --continue reopens the last session in this folder` |
 

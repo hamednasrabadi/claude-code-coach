@@ -9,21 +9,21 @@
     "src": "https://code.claude.com/docs/en/interactive-mode"
   },
   {
-    "id": "esc-esc-rewind",
-    "text": "To undo Claude's last steps, press Esc twice on an empty prompt and restore code, chat, or both",
+    "id": "terminal-esc-esc-rewind",
+    "text": "In the terminal, press Esc twice on an empty prompt to undo Claude's last steps: code, chat, or both",
     "topic": "recovery",
-    "format": "goal",
+    "format": "key",
     "level": 1,
-    "surface": "both",
+    "surface": "terminal",
     "src": "https://code.claude.com/docs/en/checkpointing"
   },
   {
-    "id": "shift-tab-modes",
-    "text": "Press Shift+Tab to switch to accept-edits mode when you're approving every edit by hand",
+    "id": "terminal-shift-tab-modes",
+    "text": "In the terminal, press Shift+Tab to switch to accept-edits mode instead of approving each edit",
     "topic": "cockpit",
     "format": "key",
     "level": 1,
-    "surface": "both",
+    "surface": "terminal",
     "src": "https://code.claude.com/docs/en/permission-modes"
   },
   {
@@ -423,8 +423,8 @@
     "src": "https://code.claude.com/docs/en/common-workflows"
   },
   {
-    "id": "ctrl-r-history",
-    "text": "Press Ctrl+R to search your prompt history and reuse something you already typed once",
+    "id": "terminal-ctrl-r-history",
+    "text": "In the terminal, press Ctrl+R to search your prompt history and reuse an earlier prompt",
     "topic": "keys",
     "format": "key",
     "level": 1,
@@ -432,8 +432,8 @@
     "src": "https://code.claude.com/docs/en/interactive-mode"
   },
   {
-    "id": "ctrl-g-editor",
-    "text": "Press Ctrl+G to write a long prompt in your own text editor instead of the input box",
+    "id": "terminal-ctrl-g-editor",
+    "text": "In the terminal, press Ctrl+G to write a long prompt in your own text editor instead",
     "topic": "keys",
     "format": "key",
     "level": 2,
@@ -441,8 +441,8 @@
     "src": "https://code.claude.com/docs/en/interactive-mode"
   },
   {
-    "id": "ctrl-s-stash",
-    "text": "Press Ctrl+S to stash your draft, ask something else, then press it again to bring it back",
+    "id": "terminal-ctrl-s-stash",
+    "text": "In the terminal, Ctrl+S stashes your draft so you can ask something else; press it again to restore",
     "topic": "keys",
     "format": "key",
     "level": 2,
@@ -450,8 +450,8 @@
     "src": "https://code.claude.com/docs/en/interactive-mode"
   },
   {
-    "id": "ctrl-b-background",
-    "text": "Press Ctrl+B to send a long-running command to the background and keep working with Claude",
+    "id": "terminal-ctrl-b-background",
+    "text": "In the terminal, press Ctrl+B to send a long-running command to the background and keep working",
     "topic": "keys",
     "format": "key",
     "level": 2,
@@ -459,8 +459,8 @@
     "src": "https://code.claude.com/docs/en/interactive-mode"
   },
   {
-    "id": "ctrl-t-tasks",
-    "text": "Press Ctrl+T to show or hide Claude's task checklist when you lose track of a big task",
+    "id": "terminal-ctrl-t-tasks",
+    "text": "In the terminal, press Ctrl+T to show or hide Claude's task checklist during a big task",
     "topic": "keys",
     "format": "key",
     "level": 2,
@@ -468,8 +468,8 @@
     "src": "https://code.claude.com/docs/en/interactive-mode"
   },
   {
-    "id": "ctrl-o-transcript",
-    "text": "Press Ctrl+O to open the full transcript and see exactly what Claude ran and read",
+    "id": "terminal-ctrl-o-transcript",
+    "text": "In the terminal, press Ctrl+O to open the full transcript and see exactly what Claude ran and read",
     "topic": "keys",
     "format": "key",
     "level": 2,
@@ -639,8 +639,8 @@
     "src": "https://code.claude.com/docs/en/commands"
   },
   {
-    "id": "statusline",
-    "text": "/statusline sets up a status bar below the prompt, for example to show model and context use",
+    "id": "terminal-statusline",
+    "text": "In the terminal, /statusline adds a status bar below the prompt, for example showing model and context",
     "topic": "interface",
     "format": "command",
     "level": 3,
@@ -691,5 +691,32 @@
     "level": 3,
     "surface": "terminal",
     "src": "https://code.claude.com/docs/en/headless"
+  },
+  {
+    "id": "app-permission-menu",
+    "text": "In the desktop app, press Ctrl+Shift+M (Cmd+Shift+M on Mac) to switch permission mode mid-session",
+    "topic": "cockpit",
+    "format": "key",
+    "level": 1,
+    "surface": "app",
+    "src": "https://code.claude.com/docs/en/desktop"
+  },
+  {
+    "id": "app-shortcut-list",
+    "text": "In the desktop app, press Ctrl+/ (Cmd+/ on Mac) to see every keyboard shortcut the Code tab supports",
+    "topic": "cockpit",
+    "format": "key",
+    "level": 1,
+    "surface": "app",
+    "src": "https://code.claude.com/docs/en/desktop"
+  },
+  {
+    "id": "app-side-chat",
+    "text": "In the desktop app, press Ctrl+; (Cmd+; on Mac) to open a side chat that can read the main thread",
+    "topic": "context",
+    "format": "key",
+    "level": 2,
+    "surface": "app",
+    "src": "https://code.claude.com/docs/en/desktop"
   }
 ]
