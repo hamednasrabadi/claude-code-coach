@@ -1,0 +1,586 @@
+[
+ {
+  "id": "esc-interrupt",
+  "topic": "cockpit",
+  "s": "keep",
+  "text": "When Claude heads the wrong way, press Esc to stop it right away, then say what to do instead",
+  "format": "when"
+ },
+ {
+  "id": "esc-esc-rewind",
+  "topic": "recovery",
+  "s": "keep",
+  "text": "To undo Claude's last steps, press Esc twice on an empty prompt and restore code, chat, or both",
+  "format": "goal"
+ },
+ {
+  "id": "shift-tab-modes",
+  "topic": "cockpit",
+  "s": "keep",
+  "text": "Press Shift+Tab to switch to accept-edits mode when you're approving every edit by hand",
+  "format": "key"
+ },
+ {
+  "id": "at-mention-files",
+  "topic": "cockpit",
+  "s": "keep",
+  "text": "Type @ and start a file path to attach the real file instead of describing what's in it",
+  "format": "key"
+ },
+ {
+  "id": "bang-bash-mode",
+  "topic": "cockpit",
+  "s": "keep",
+  "text": "Start a message with ! to run a shell command yourself, handy for logins and quick checks",
+  "format": "key"
+ },
+ {
+  "id": "clear-between-tasks",
+  "topic": "context",
+  "s": "keep",
+  "text": "When you start an unrelated task, run /clear so the old task's context doesn't skew answers",
+  "format": "when"
+ },
+ {
+  "id": "context-when-dips",
+  "topic": "context",
+  "s": "keep",
+  "text": "/context shows what is filling the context window when answers start getting sloppy",
+  "format": "command"
+ },
+ {
+  "id": "btw-no-derail",
+  "topic": "context",
+  "s": "keep",
+  "text": "/btw <question> answers a side question without adding it to the conversation history",
+  "format": "command"
+ },
+ {
+  "id": "add-dir",
+  "topic": "context",
+  "s": "keep",
+  "text": "/add-dir <path> lets Claude read and edit a second folder or repo in the same session",
+  "format": "command"
+ },
+ {
+  "id": "resume-not-eternal",
+  "topic": "context",
+  "s": "keep",
+  "text": "Old sessions aren't lost after /clear: /resume reopens any of them, so start fresh freely",
+  "format": "fact"
+ },
+ {
+  "id": "compact-vs-clear",
+  "topic": "context",
+  "s": "keep",
+  "text": "To keep a long task going when context fills up, run /compact to summarize history and carry on",
+  "format": "goal"
+ },
+ {
+  "id": "plan-before-build",
+  "s": "drop",
+  "why": "Claude Code's built-in tips already teach Plan Mode (Shift+Tab twice)."
+ },
+ {
+  "id": "correction-to-claude-md",
+  "topic": "memory",
+  "s": "keep",
+  "text": "When you correct Claude on the same thing twice, add the rule as one line in your CLAUDE.md",
+  "format": "when"
+ },
+ {
+  "id": "user-level-claude-md",
+  "topic": "memory",
+  "s": "keep",
+  "text": "~/.claude/CLAUDE.md applies to every project, so put your OS and style preferences there once",
+  "format": "fact"
+ },
+ {
+  "id": "init-then-edit",
+  "topic": "memory",
+  "s": "keep",
+  "text": "/init drafts a CLAUDE.md from your codebase, so a new project starts with notes to edit",
+  "format": "command"
+ },
+ {
+  "id": "settings-three-scopes",
+  "topic": "memory",
+  "s": "keep",
+  "text": ".claude/settings.local.json holds settings just for you in this repo and stays out of git",
+  "format": "fact"
+ },
+ {
+  "id": "truth-procedure-law",
+  "s": "drop",
+  "why": "Concept with no single action. Covered by the CLAUDE.md, skill, and hooks crumbs."
+ },
+ {
+  "id": "skill-reflex",
+  "topic": "skills",
+  "s": "keep",
+  "text": "Type / to list every skill and command you already have before you build something new",
+  "format": "key"
+ },
+ {
+  "id": "plugin-before-building",
+  "topic": "skills",
+  "s": "keep",
+  "text": "Before you build a skill or hook from scratch, check /plugin; a ready-made one may exist",
+  "format": "when"
+ },
+ {
+  "id": "command-is-skill",
+  "topic": "skills",
+  "s": "keep",
+  "text": "To make a skill run only when you call it, add disable-model-invocation: true to its frontmatter",
+  "format": "goal"
+ },
+ {
+  "id": "bottle-repeated-prompt",
+  "topic": "skills",
+  "s": "keep",
+  "text": "To stop retyping a prompt, save it as .claude/skills/<name>/SKILL.md and run it as /<name>",
+  "format": "goal"
+ },
+ {
+  "id": "subagents-for-mess",
+  "topic": "subagents",
+  "s": "keep",
+  "text": "Before a big search across many files, add \"use subagents\" so the noise stays out of your context",
+  "format": "when"
+ },
+ {
+  "id": "parallel-sessions",
+  "topic": "subagents",
+  "s": "keep",
+  "text": "Two unrelated tasks run better in two separate sessions than sharing one context window",
+  "format": "fact"
+ },
+ {
+  "id": "hooks-are-laws",
+  "topic": "automation",
+  "s": "keep",
+  "text": "A rule you repeat in chat can be forgotten; /hooks lets the harness enforce it every time",
+  "format": "fact"
+ },
+ {
+  "id": "automate-when-stable",
+  "s": "drop",
+  "why": "Advice with no action to type."
+ },
+ {
+  "id": "routines-while-away",
+  "topic": "automation",
+  "s": "keep",
+  "text": "/schedule sets up a routine that runs a recurring check for you, like a morning summary",
+  "format": "command"
+ },
+ {
+  "id": "loop-command",
+  "topic": "automation",
+  "s": "keep",
+  "text": "/loop 5m <prompt> re-runs a check every 5 minutes, useful while waiting on CI or a deploy",
+  "format": "command"
+ },
+ {
+  "id": "model-ladder",
+  "topic": "models",
+  "s": "keep",
+  "text": "/model switches models mid-session, so simple tasks don't have to run on your biggest model",
+  "format": "command"
+ },
+ {
+  "id": "climb-when-struggling",
+  "topic": "models",
+  "s": "keep",
+  "text": "When the same fix fails twice, switch to a stronger model with /model instead of re-prompting",
+  "format": "when"
+ },
+ {
+  "id": "effort-dial",
+  "topic": "models",
+  "s": "keep",
+  "text": "/effort high makes Claude think longer before replying when a hard problem gets a shallow answer",
+  "format": "command"
+ },
+ {
+  "id": "fast-mode",
+  "topic": "models",
+  "s": "keep",
+  "text": "/fast turns on faster output while keeping the same model, for when you want Opus sooner",
+  "format": "command"
+ },
+ {
+  "id": "fluent-not-correct",
+  "s": "drop",
+  "why": "Merged into ask-for-source."
+ },
+ {
+  "id": "ask-for-source",
+  "topic": "trust",
+  "s": "keep",
+  "text": "When Claude names an exact API, flag, or version, ask it to quote the doc lines it's based on",
+  "format": "when"
+ },
+ {
+  "id": "re-ask-fresh",
+  "topic": "trust",
+  "s": "keep",
+  "text": "To check a doubtful answer, ask the same question in a fresh session and compare the two",
+  "format": "goal"
+ },
+ {
+  "id": "permission-to-not-know",
+  "topic": "trust",
+  "s": "keep",
+  "text": "For fewer confident guesses, add \"If you're unsure, say so\" as a line in your CLAUDE.md",
+  "format": "goal"
+ },
+ {
+  "id": "code-truth-machine",
+  "topic": "verify",
+  "s": "keep",
+  "text": "Before you accept new code, ask Claude to run the tests or the build, not just read it",
+  "format": "when"
+ },
+ {
+  "id": "read-the-diff",
+  "topic": "verify",
+  "s": "keep",
+  "text": "/diff shows exactly what changed in your working tree, so you can check before trusting \"done\"",
+  "format": "command"
+ },
+ {
+  "id": "the-loop",
+  "s": "drop",
+  "why": "A method, not a crumb. Belongs in the skill's references."
+ },
+ {
+  "id": "commit-often",
+  "topic": "git",
+  "s": "keep",
+  "text": "Before a big change, commit first so undoing it is a single git command",
+  "format": "when"
+ },
+ {
+  "id": "worktree-for-risky",
+  "topic": "git",
+  "s": "keep",
+  "text": "claude --worktree <name> starts a risky experiment in its own checkout, leaving main untouched",
+  "format": "command"
+ },
+ {
+  "id": "two-corrections-stop",
+  "topic": "recovery",
+  "s": "keep",
+  "text": "When a correction hasn't landed twice, press Esc twice to rewind and ask again from scratch",
+  "format": "when"
+ },
+ {
+  "id": "recovery-ladder",
+  "s": "drop",
+  "why": "Five actions in one tip. Each now has its own crumb."
+ },
+ {
+  "id": "usage-gauge",
+  "topic": "cost",
+  "s": "keep",
+  "text": "/usage shows how much of your usage a session consumed, worth a look after heavy work",
+  "format": "command"
+ },
+ {
+  "id": "specific-not-louder",
+  "topic": "prompting",
+  "s": "keep",
+  "text": "To fix a result that missed, say exactly what was wrong instead of resending the same request",
+  "format": "goal"
+ },
+ {
+  "id": "show-an-example",
+  "topic": "prompting",
+  "s": "keep",
+  "text": "One pasted example of the output you want beats a whole paragraph describing the format",
+  "format": "fact"
+ },
+ {
+  "id": "give-the-because",
+  "topic": "prompting",
+  "s": "keep",
+  "text": "A reason like \"keep it fast, it runs on every keystroke\" lets Claude make the right calls",
+  "format": "fact"
+ },
+ {
+  "id": "claude-improves-your-prompt",
+  "topic": "prompting",
+  "s": "keep",
+  "text": "To phrase a request better, ask Claude to rewrite your prompt and explain what it changed",
+  "format": "goal"
+ },
+ {
+  "id": "paste-screenshots",
+  "topic": "prompting",
+  "s": "keep",
+  "text": "Paste a screenshot with Ctrl+V (Alt+V on Windows) instead of describing a visual bug in words",
+  "format": "key"
+ },
+ {
+  "id": "right-surface",
+  "s": "drop",
+  "why": "Product names for Chat and Cowork could not be confirmed in the docs."
+ },
+ {
+  "id": "mcp-permission-format",
+  "topic": "mcp",
+  "s": "keep",
+  "text": "MCP server not working? /mcp shows which servers are connected and which need sign-in",
+  "format": "question"
+ },
+ {
+  "id": "one-liner-reflex",
+  "s": "drop",
+  "why": "Merged into give-the-because and specific-not-louder."
+ },
+ {
+  "id": "eternal-session",
+  "s": "drop",
+  "why": "Merged into clear-between-tasks."
+ },
+ {
+  "id": "headless-mode",
+  "topic": "automation",
+  "s": "keep",
+  "text": "claude -p \"<prompt>\" runs Claude once and prints the result, ready for scripts and CI",
+  "format": "command"
+ },
+ {
+  "id": "subagent-needs-context",
+  "topic": "subagents",
+  "s": "keep",
+  "text": "A subagent can't see this chat, so give it file paths and say what a good answer looks like",
+  "format": "fact"
+ },
+ {
+  "id": "explore-before-plan",
+  "topic": "planning",
+  "s": "keep",
+  "text": "Before Claude plans changes in unfamiliar code, ask it to read and summarize the code first",
+  "format": "when"
+ },
+ {
+  "id": "continue-last",
+  "topic": "sessions",
+  "s": "new",
+  "text": "Closed the terminal by accident? claude --continue reopens the last session in this folder",
+  "format": "question"
+ },
+ {
+  "id": "ctrl-r-history",
+  "topic": "keys",
+  "s": "new",
+  "text": "Press Ctrl+R to search your prompt history and reuse something you already typed once",
+  "format": "key"
+ },
+ {
+  "id": "ctrl-g-editor",
+  "topic": "keys",
+  "s": "new",
+  "text": "Press Ctrl+G to write a long prompt in your own text editor instead of the input box",
+  "format": "key"
+ },
+ {
+  "id": "ctrl-s-stash",
+  "topic": "keys",
+  "s": "new",
+  "text": "Press Ctrl+S to stash your draft, ask something else, then press it again to bring it back",
+  "format": "key"
+ },
+ {
+  "id": "ctrl-b-background",
+  "topic": "keys",
+  "s": "new",
+  "text": "Press Ctrl+B to send a long-running command to the background and keep working with Claude",
+  "format": "key"
+ },
+ {
+  "id": "ctrl-t-tasks",
+  "topic": "keys",
+  "s": "new",
+  "text": "Press Ctrl+T to show or hide Claude's task checklist when you lose track of a big task",
+  "format": "key"
+ },
+ {
+  "id": "ctrl-o-transcript",
+  "topic": "keys",
+  "s": "new",
+  "text": "Press Ctrl+O to open the full transcript and see exactly what Claude ran and read",
+  "format": "key"
+ },
+ {
+  "id": "queue-messages",
+  "topic": "cockpit",
+  "s": "new",
+  "text": "You can type while Claude works: press Enter and your message is queued for the next turn",
+  "format": "fact"
+ },
+ {
+  "id": "branch-conversation",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/branch copies the conversation so you can try another direction without losing this one",
+  "format": "command"
+ },
+ {
+  "id": "subtask",
+  "topic": "subagents",
+  "s": "new",
+  "text": "/subtask <task> hands a side job to a subagent and brings only the result back here",
+  "format": "command"
+ },
+ {
+  "id": "background-session",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/background detaches this session to keep running; check on it later with claude agents",
+  "format": "command"
+ },
+ {
+  "id": "rename-session",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/rename <name> labels this session so you can find it quickly later in /resume",
+  "format": "command"
+ },
+ {
+  "id": "recap",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/recap gives a one-line summary of where this session stands, handy after a break",
+  "format": "command"
+ },
+ {
+  "id": "copy-response",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/copy puts Claude's last answer on your clipboard; /copy 2 grabs the one before it",
+  "format": "command"
+ },
+ {
+  "id": "cd-session",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/cd <path> moves this whole session to another folder without losing the conversation",
+  "format": "command"
+ },
+ {
+  "id": "export-session",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/export <file> saves the whole conversation as plain text, ready to share or archive",
+  "format": "command"
+ },
+ {
+  "id": "code-review",
+  "topic": "verify",
+  "s": "new",
+  "text": "Before you open a PR, run /code-review to check the changes for bugs; add --fix to apply fixes",
+  "format": "when"
+ },
+ {
+  "id": "simplify",
+  "topic": "verify",
+  "s": "new",
+  "text": "/simplify reviews your changes for cleanup and applies it; it doesn't hunt for bugs",
+  "format": "command"
+ },
+ {
+  "id": "security-review",
+  "topic": "verify",
+  "s": "new",
+  "text": "When a change touches auth, user input, or secrets, run /security-review on the branch",
+  "format": "when"
+ },
+ {
+  "id": "batch",
+  "topic": "automation",
+  "s": "new",
+  "text": "/batch <instruction> splits a change across many files into parallel agents in worktrees",
+  "format": "command"
+ },
+ {
+  "id": "worktreeinclude",
+  "topic": "git",
+  "s": "new",
+  "text": "New worktree missing your .env? List it in .worktreeinclude to copy it into each one",
+  "format": "question"
+ },
+ {
+  "id": "claude-md-imports",
+  "topic": "memory",
+  "s": "new",
+  "text": "To slim down a long CLAUDE.md, move sections into files and pull them in with @path/to/file",
+  "format": "goal"
+ },
+ {
+  "id": "rules-dir",
+  "topic": "memory",
+  "s": "new",
+  "text": "Rules in .claude/rules/ with a paths: field load only when Claude works on matching files",
+  "format": "fact"
+ },
+ {
+  "id": "rewind-limits",
+  "topic": "recovery",
+  "s": "new",
+  "text": "Rewind can't undo rm, mv, or cp run in Bash, so commit before Claude deletes files",
+  "format": "fact"
+ },
+ {
+  "id": "tui-fullscreen",
+  "topic": "interface",
+  "s": "new",
+  "text": "Terminal flickering on long output? /tui fullscreen switches to the flicker-free renderer",
+  "format": "question"
+ },
+ {
+  "id": "statusline",
+  "topic": "interface",
+  "s": "new",
+  "text": "/statusline sets up a status bar below the prompt, for example to show model and context use",
+  "format": "command"
+ },
+ {
+  "id": "terminal-setup",
+  "topic": "interface",
+  "s": "new",
+  "text": "Shift+Enter won't add a new line in VS Code or Cursor? /terminal-setup installs the keybinding",
+  "format": "question"
+ },
+ {
+  "id": "import-config",
+  "topic": "interface",
+  "s": "new",
+  "text": "Coming from Codex, Gemini CLI, or Cursor? /import brings your existing configuration over",
+  "format": "question"
+ },
+ {
+  "id": "remote-control",
+  "topic": "sessions",
+  "s": "new",
+  "text": "/remote-control lets you continue this session from claude.ai when you step away from your desk",
+  "format": "command"
+ },
+ {
+  "id": "config-set",
+  "topic": "interface",
+  "s": "new",
+  "text": "/config <key>=<value> changes a setting in one line without opening the settings menu",
+  "format": "command"
+ },
+ {
+  "id": "bare-ci",
+  "topic": "automation",
+  "s": "new",
+  "text": "claude -p --bare skips your hooks, skills, and CLAUDE.md so CI runs stay repeatable",
+  "format": "command"
+ }
+]
