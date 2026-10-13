@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Installer for claude-code-coach.
-//   node install.mjs              link the skill + register the SessionStart hook
+//   node install.mjs              link the skill + point Claude Code's spinner tips at the crumbs
 //   node install.mjs --uninstall  reverse both
 // Idempotent: running it twice changes nothing the second time.
 
@@ -8,16 +8,17 @@ import { readFileSync, writeFileSync, copyFileSync, mkdirSync, rmSync, symlinkSy
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
-import { execFileSync } from 'node:child_process';
+import { execSync } from 'node:child_process';
 
 const SKILL_DIR = dirname(fileURLToPath(import.meta.url));
 const CONFIG_DIR = process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude');
 const SKILLS_DIR = join(CONFIG_DIR, 'skills');
 const LINK = join(SKILLS_DIR, 'claude-code-coach');
 const SETTINGS = join(CONFIG_DIR, 'settings.json');
-// Forward slashes work in the hook command on every platform, Windows included.
-const COMMAND = `node "${join(SKILL_DIR, 'coach.mjs').split('\\').join('/')}" session`;
-const MATCHERS = ['startup', 'clear'];
+// Forward slashes work in settings paths on every platform, Windows included.
+const TIPS_FILE = join(SKILL_DIR, 'try-tips.json').split('\\').join('/');
+const LABEL = 'Try';
+const MIN_VERSION = [2, 1, 247]; // first release that reads tipsFile and label
 
 const uninstalling = process.argv.includes('--uninstall');
 const say = (icon, msg) => console.log(`  ${icon} ${msg}`);
@@ -45,13 +46,13 @@ const unlinkSkill = () => {
   if (!existsSync(LINK)) return say('=', 'skill was not linked');
   const current = linkTarget();
   if (current && !samePath(current, SKILL_DIR)) {
-    return say('!', `left ${LINK} alone — it points at ${current}, not this repo`);
+    return say('!', `left ${LINK} alone, it points at ${current}, not this repo`);
   }
   rmSync(LINK, { recursive: true, force: true });
   say('-', `unlinked ${LINK}`);
 };
 
-// ----------------------------------------------------------------- the hook
+// ------------------------------------------------------------- the settings
 
 const readSettings = () => (existsSync(SETTINGS) ? JSON.parse(readFileSync(SETTINGS, 'utf8')) : {});
 
@@ -68,55 +69,95 @@ const writeSettings = (settings) => {
   writeFileSync(SETTINGS, JSON.stringify(settings, null, 2) + '\n');
 };
 
-const isOurs = (entry) => entry?.hooks?.some((h) => h.command === COMMAND);
+const isOurTipsFile = (p) => typeof p === 'string' && samePath(p, TIPS_FILE);
 
-const addHook = () => {
-  const settings = readSettings();
-  const existing = settings.hooks?.SessionStart ?? [];
-  const missing = MATCHERS.filter((m) => !existing.some((e) => e.matcher === m && isOurs(e)));
-  if (!missing.length) return say('=', 'SessionStart hook already registered');
+// The first version registered a SessionStart hook running coach.mjs. It is
+// gone now; strip any entry that still calls it so it can't error at startup.
+const isLegacyHook = (h) => typeof h?.command === 'string' && /claude-code-coach\/coach\.mjs"? session/.test(h.command.split('\\').join('/'));
 
-  settings.hooks ??= {};
-  settings.hooks.SessionStart = [
-    ...existing,
-    ...missing.map((matcher) => ({ matcher, hooks: [{ type: 'command', command: COMMAND }] })),
-  ];
-  writeSettings(settings);
-  say('+', `registered SessionStart hook for: ${missing.join(', ')}`);
-};
-
-const removeHook = () => {
-  const settings = readSettings();
-  const existing = settings.hooks?.SessionStart;
-  if (!existing) return say('=', 'no SessionStart hook to remove');
-
-  const kept = existing.filter((e) => !isOurs(e));
-  if (kept.length === existing.length) return say('=', 'SessionStart hook was not ours');
-
+const dropLegacyHooks = (settings) => {
+  const entries = settings.hooks?.SessionStart;
+  if (!entries) return false;
+  const kept = entries
+    .map((e) => ({ ...e, hooks: (e.hooks ?? []).filter((h) => !isLegacyHook(h)) }))
+    .filter((e) => e.hooks.length);
+  const removed = entries.reduce((n, e) => n + (e.hooks?.length ?? 0), 0) - kept.reduce((n, e) => n + e.hooks.length, 0);
+  if (!removed) return false;
   if (kept.length) settings.hooks.SessionStart = kept;
   else delete settings.hooks.SessionStart;
-  if (settings.hooks && !Object.keys(settings.hooks).length) delete settings.hooks;
+  if (!Object.keys(settings.hooks).length) delete settings.hooks;
+  say('-', `removed ${removed} SessionStart hook entr${removed === 1 ? 'y' : 'ies'} left by the previous version`);
+  return true;
+};
 
-  writeSettings(settings);
-  say('-', 'removed the SessionStart hook (other hooks left untouched)');
+const configure = () => {
+  const settings = readSettings();
+  let changed = dropLegacyHooks(settings);
+
+  const override = settings.spinnerTipsOverride ?? {};
+  if (override.tipsFile && !isOurTipsFile(override.tipsFile)) {
+    throw new Error(`spinnerTipsOverride.tipsFile already points at ${override.tipsFile}. Claude Code reads one tips file; remove that one first.`);
+  }
+  if (isOurTipsFile(override.tipsFile) && override.label === LABEL) {
+    say('=', 'spinner tips already point at the crumbs');
+  } else {
+    // Keep any inline tips the user already has; only our two fields change.
+    settings.spinnerTipsOverride = { ...override, label: LABEL, tipsFile: TIPS_FILE };
+    say('+', `spinner tips now read ${TIPS_FILE}`);
+    changed = true;
+  }
+
+  if (changed) writeSettings(settings);
+  if (settings.spinnerTipsEnabled === false) {
+    say('!', 'spinnerTipsEnabled is false in your settings, so no tips will show. Turn on "Show tips" in /config.');
+  }
+};
+
+const unconfigure = () => {
+  const settings = readSettings();
+  let changed = dropLegacyHooks(settings);
+
+  const override = settings.spinnerTipsOverride;
+  if (override && isOurTipsFile(override.tipsFile)) {
+    const { tipsFile, label, ...rest } = override;
+    if (Object.keys(rest).length) settings.spinnerTipsOverride = rest;
+    else delete settings.spinnerTipsOverride;
+    say('-', 'spinner tips no longer read the crumbs (your other tip settings left untouched)');
+    changed = true;
+  } else {
+    say('=', 'spinner tips were not pointing at the crumbs');
+  }
+
+  if (changed) writeSettings(settings);
 };
 
 // ------------------------------------------------------------------- verify
 
+const claudeVersion = () => {
+  try {
+    const out = execSync('claude --version', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    const m = out.match(/(\d+)\.(\d+)\.(\d+)/);
+    return m ? m.slice(1, 4).map(Number) : null;
+  } catch {
+    return null;
+  }
+};
+
+const atLeast = (v, min) => {
+  for (let i = 0; i < 3; i++) if (v[i] !== min[i]) return v[i] > min[i];
+  return true;
+};
+
 const verify = () => {
-  // The smoke test runs a real session, which advances the schedule. Snapshot
-  // first and put it back after, so re-running the installer never costs a
-  // long-time user their progress.
-  const statePath = join(SKILL_DIR, 'state.json');
-  const before = existsSync(statePath) ? readFileSync(statePath, 'utf8') : null;
+  const tips = JSON.parse(readFileSync(TIPS_FILE, 'utf8'));
+  const valid = Array.isArray(tips) && tips.length && tips.every((t) => t.id && t.text && !t.text.includes('\n'));
+  if (!valid) throw new Error('try-tips.json is invalid; run node crumbs.mjs build');
+  say('✓', `${tips.length} crumbs ready`);
 
-  const out = execFileSync('node', [join(SKILL_DIR, 'coach.mjs'), 'session'], { encoding: 'utf8' });
-  const ctx = JSON.parse(out).hookSpecificOutput.additionalContext;
-  say('✓', `hook output parses — ${ctx.length} chars (~${Math.round(ctx.length / 4)} tokens per session)`);
-
-  writeFileSync(statePath, before ?? JSON.stringify({ version: 1, tips: {} }, null, 2) + '\n');
-  const seen = Object.keys(JSON.parse(readFileSync(statePath, 'utf8')).tips).length;
-  say('✓', seen ? `progress preserved — ${seen} tip(s) already in rotation` : 'starting the curriculum from tip one');
+  const v = claudeVersion();
+  if (!v) say('!', `could not run "claude --version"; crumbs need Claude Code ${MIN_VERSION.join('.')} or later`);
+  else if (!atLeast(v, MIN_VERSION)) say('!', `Claude Code ${v.join('.')} is too old for crumbs; run "claude update" to get ${MIN_VERSION.join('.')} or later`);
+  else say('✓', `Claude Code ${v.join('.')} supports crumbs`);
 };
 
 // --------------------------------------------------------------------- main
@@ -125,16 +166,16 @@ try {
   if (uninstalling) {
     console.log('\nUninstalling claude-code-coach\n');
     unlinkSkill();
-    removeHook();
+    unconfigure();
     console.log('\nDone. Your settings backup is in ' + join(CONFIG_DIR, 'backups') + '\n');
   } else {
     console.log('\nInstalling claude-code-coach\n');
     linkSkill();
-    addHook();
+    configure();
     verify();
-    console.log('\nDone. Start a new session (or /clear) and the coach is live.\n');
+    console.log('\nDone. Start a new Claude Code session; crumbs appear under the spinner while Claude works.\n');
   }
 } catch (err) {
-  console.error(`\nInstall failed: ${err.message}\n`);
+  console.error(`\n${uninstalling ? 'Uninstall' : 'Install'} failed: ${err.message}\n`);
   process.exit(1);
 }
