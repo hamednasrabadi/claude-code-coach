@@ -1,22 +1,38 @@
 # Claude Code Coach
 
-Teaches you Claude Code while you work — 2–3 tips per session, on a spaced-repetition schedule, for a fixed ~400-token budget.
+Learn Claude Code while you use it. While Claude works, a short tip appears under the spinner, in the same place Claude Code shows its own tips:
 
-Claude Code's built-in self-knowledge is reactive: it answers questions about itself when asked, and never tells you about the feature you aren't using. This skill fixes that. A `SessionStart` hook injects a small block at the start of every session; Claude holds the tips and drops them at natural moments — when a tip's trigger actually occurs, not as a wall of text up front.
+```
+> refactor the auth module into smaller files
 
-Tips you've already seen come back on a growing interval — **2 → 6 → 16 → 45 → 120 days** — so they're learned rather than shown once and forgotten.
+✻ Pollinating… (6s · esc to interrupt)
+  ⎿ Try: Before a big change, commit first so undoing it is a single git command
+```
 
-**Key properties:**
-- 🧠 **Spaced repetition** — Leitner boxes, 2 new tips + 1 review per session
-- 🪶 **~400 tokens/session, zero tool calls** — the scheduler runs in `coach.mjs`, not in the model
-- 🎯 **Contextual delivery** — every tip carries a trigger; Claude waits for it
-- 📚 **55 tips, 17 topics** — every slash command cross-checked against the official reference
-- ✍️ **Learns as you go** — add a tip the moment a session teaches you something
-- 🔌 **One command to install, one to remove**
+Each tip is called a crumb. It names one key or command and what it does for you. You install it once. After that it runs on its own.
+
+## What to expect
+
+- **One line at a time, only while Claude is working.** Nothing is printed into the chat, and no tip interrupts you.
+- **Basics first.** The bank holds 77 crumbs at three levels. New users see the fundamentals before the advanced material.
+- **Crumbs come back.** After a crumb is shown, it waits at least three sessions, then returns when the others have had their turn. Repetition is what makes them stick.
+- **Claude Code's own tips stay on.** Crumbs share the rotation with the built-in tips, so you still hear about new features.
+- **No cost.** Crumbs use no tokens, run no hook, and add nothing to Claude's context.
+
+### Where crumbs appear
+
+| Surface | Status |
+|---|---|
+| Terminal (`claude`) | Supported and tested |
+| Desktop app, VS Code, JetBrains | Depends on whether that surface shows spinner tips. The Claude Code docs don't say. If it does, crumbs appear there with no extra setup. |
+
+## Requirements
+
+- Claude Code 2.1.247 or later (`claude --version`; update with `claude update`)
+- Node.js 18 or later
+- git
 
 ## Install
-
-Requires [Node.js](https://nodejs.org) 18+ and Claude Code.
 
 ```sh
 git clone https://github.com/hamednasrabadi/claude-code-coach.git
@@ -24,100 +40,142 @@ cd claude-code-coach/claude-code-coach
 node install.mjs
 ```
 
-That links the skill into `~/.claude/skills/` (a junction on Windows, a symlink elsewhere — no admin needed) and registers the `SessionStart` hook in `~/.claude/settings.json`, backing up your settings first and leaving every other key untouched.
+The installer prints what it changed:
 
 ```
 Installing claude-code-coach
 
   + linked C:\Users\you\.claude\skills\claude-code-coach
-  ~ backed up settings to C:\Users\you\.claude\backups\settings.json.2026-08-23T15-22-38-102Z
-  + registered SessionStart hook for: startup, clear
-  ✓ hook output parses — 1631 chars (~408 tokens per session)
-  ✓ starting the curriculum from tip one
+  + spinner tips now read C:/src/claude-code-coach/claude-code-coach/try-tips.json
+  ~ backed up settings to C:\Users\you\.claude\backups\settings.json.2026-10-13T13-07-55-557Z
+  ✓ 77 crumbs ready
+  ✓ Claude Code 2.1.296 supports crumbs
 
-Done. Start a new session (or /clear) and the coach is live.
+Done. Start a new Claude Code session; crumbs appear under the spinner while Claude works.
 ```
 
-Start a new session — or `/clear` in the current one — and it's running. Re-running the installer is safe: it's idempotent and preserves your progress.
+It makes two changes:
 
-**To remove it:**
+1. It links the skill into `~/.claude/skills/claude-code-coach`. That is a junction on Windows and a symlink elsewhere, so no admin rights are needed.
+2. It adds one key to `~/.claude/settings.json`:
+
+   ```json
+   "spinnerTipsOverride": {
+     "label": "Try",
+     "tipsFile": "<clone>/claude-code-coach/try-tips.json"
+   }
+   ```
+
+Your settings are backed up before anything is written, and every other key is left alone. If you already have inline tips under `spinnerTipsOverride`, they are kept. Running the installer again is safe; it reports what is already in place and changes nothing.
+
+Start a new session and the crumbs are live. Claude Code reads the tip file when it starts, so a session that was already open keeps its current tips.
+
+Keep the clone where it is. The setting points at the file inside it.
+
+## Update
+
+```sh
+cd claude-code-coach
+git pull
+```
+
+There is nothing to reinstall. New sessions read the updated crumbs.
+
+## Uninstall
 
 ```sh
 node install.mjs --uninstall
 ```
 
-Unlinks the skill and strips only its own hook entries, leaving any other hooks you've configured in place.
+This removes the skill link and the two fields the installer added. Any tips of your own stay in place.
 
-## What a tip looks like
+## Using it
 
-Claude never dumps the session's tips at startup. It waits for the moment:
+There is nothing to run. Use Claude Code as usual and read the crumbs as they appear.
 
-> 💡 **"Always do X" is a hook, not a prompt** — a standing instruction you give in chat is something Claude can forget; a hook is enforced by the harness and can't be.
+If a crumb catches your eye, ask Claude about it, for example *"what does the /branch tip mean?"* The skill gives Claude reference notes on keys, commands, context management, and workflow, so it can explain the crumb with an example from your current work.
 
-One per message, at most, at a natural seam. Never mid-debugging. If a tip's trigger doesn't occur, it's dropped silently and stays due for next time.
+To hide all spinner tips, including Claude Code's own, turn off **Show tips** in `/config`.
 
-## How the scheduling works
+### The crumbs
 
-Each session takes **2 never-seen tips and reserves at least one slot for a review**, capped at one tip per topic so you never get three variations of the same lesson.
+The bank covers the keys you use all day, session and context management, CLAUDE.md and memory, skills, hooks and plugins, subagents, models and effort, review and verification, git and worktrees, and automation. Every command was checked against the official documentation at [code.claude.com/docs](https://code.claude.com/docs).
 
-That reservation is the whole design. Without it, never-shown tips are infinitely overdue and outrank every review — with a 55-tip bank you'd get nothing but new material for ~18 sessions and never see anything twice. Reviewing is the point.
+Crumbs come in a few shapes, chosen to fit the tip:
 
-```
-day  0   permission-to-not-know   hooks-are-laws       commit-often
-day  2   claude-improves-prompt   btw-no-derail        permission-to-not-know  ← +2d
-day  3   worktree-for-risky       at-mention-files     hooks-are-laws          ← +3d
-day  5   plugin-before-building    specific-not-louder  commit-often            ← +5d
-day 30   esc-esc-rewind           esc-interrupt        claude-improves-prompt  ← +28d
-```
-
-State lives in `state.json`, which is gitignored — your progress is yours, and deleting it just restarts the curriculum.
-
-## Commands
-
-Run from the `claude-code-coach/` directory.
-
-| Command | Effect |
+| Shape | Example |
 |---|---|
-| `node coach.mjs status` | the whole bank — boxes, due dates, coverage by topic |
-| `node coach.mjs preview` | dry-run the picker; state untouched |
-| `node coach.mjs know <id>` | you already do this → 120-day interval |
-| `node coach.mjs again <id>` | you hit the problem anyway → back to 2 days |
-| `node coach.mjs add` | append a tip (JSON on stdin) |
-| `node test-schedule.mjs` | bank integrity + a 13-session scheduling simulation |
+| Command | `/recap gives a one-line summary of where this session stands, handy after a break` |
+| Key | `Press Ctrl+R to search your prompt history and reuse something you already typed once` |
+| When | `Before you open a PR, run /code-review to check the changes for bugs; add --fix to apply fixes` |
+| Goal | `To undo Claude's last steps, press Esc twice on an empty prompt and restore code, chat, or both` |
+| Fact | `Rewind can't undo rm, mv, or cp run in Bash, so commit before Claude deletes files` |
+| Question | `Closed the terminal by accident? claude --continue reopens the last session in this folder` |
 
-In practice you don't type these — you tell Claude "I already do that" and it runs the right one.
-
-## Adding a tip
+To read the whole bank:
 
 ```sh
-echo '{"id":"kebab-id","topic":"context","title":"Short imperative title",
-       "body":"One or two sentences. Concrete. Under 180 chars.",
-       "action":"/thecommand","triggers":["when this should fire"],
-       "src":"session 2026-08-23"}' | node coach.mjs add
+node crumbs.mjs list
 ```
 
-New tips enter at box 1 and join the normal rotation. `test-schedule.mjs` enforces unique ids, required fields, and the length caps, so a careless addition can't quietly blow the token budget.
+## How it works
+
+Claude Code has a documented setting, [`spinnerTipsOverride`](https://code.claude.com/docs/en/settings-reference#spinnertipsoverride), that adds your own tips to the spinner. It also does the scheduling: it keeps a show history for each tip by id, shows the tip that has gone unshown the longest, and honors a per-tip cooldown and priority.
+
+This project supplies the content and sets that up:
+
+- `crumbs.json` is the source bank. Each crumb has an id, its text, a topic, a level, and the documentation page it was checked against.
+- `try-tips.json` is generated from it and holds only what Claude Code reads: id, text, a cooldown of three sessions, and a priority from the level (basics `2`, everyday `0`, advanced `-2`).
+- Crumb wording never changes once published. You recognize a crumb you have seen before by its words, and Claude Code tracks its history by its id. A reworded crumb gets a new id, and the test suite enforces this through `crumbs.lock`.
+
+Earlier versions ran their own scheduler in a `SessionStart` hook and asked Claude to deliver tips in the chat. That spent tokens every session and depended on the model remembering to do it. The installer removes that hook if it finds it.
+
+## Troubleshooting
+
+**No crumbs appear.**
+
+1. Start a new session. The tip file is read once, at startup.
+2. Run `claude --version`. You need 2.1.247 or later.
+3. Check that **Show tips** is on in `/config`.
+4. Run `node install.mjs` again. It reports anything that is not in place.
+
+**I only see Claude Code's own tips.** The tip file path in `~/.claude/settings.json` must exist. If you moved or deleted the clone, run the installer again from its new location.
+
+**The installer refuses to run.** Another tool already set `spinnerTipsOverride.tipsFile`. Claude Code reads one tip file, so remove that setting first, or merge the two tip lists by hand.
+
+## Adding a crumb
+
+1. Add an entry to `claude-code-coach/crumbs.json`. Follow the rules in [SKILL.md](claude-code-coach/SKILL.md#adding-or-editing-crumbs): one action, 70 to 110 characters, checked against the docs, and not something Claude Code's built-in tips already teach.
+2. Regenerate the tip file and lock the new id:
+
+   ```sh
+   node crumbs.mjs build
+   ```
+
+3. Run the tests:
+
+   ```sh
+   node test.mjs
+   ```
+
+The tests check every crumb against the rules, check that `try-tips.json` is current, and run the installer against a temporary config directory.
 
 ## Layout
 
 ```
 claude-code-coach/
-  SKILL.md            skill definition — what Claude reads on demand
-  install.mjs         installer / uninstaller
-  coach.mjs           scheduler, CLI, and hook entrypoint
-  tips.json           the tip bank
-  digest.md           the model-facing lines injected each session
-  learnings.md        dated log of tips added from real sessions
-  test-schedule.mjs   integrity + scheduling tests
-  references/         cockpit · context · building · loop (loaded on demand)
+  SKILL.md        the skill Claude loads for questions about Claude Code
+  crumbs.json     the crumb bank (source of truth)
+  try-tips.json   generated; the file Claude Code reads
+  crumbs.lock     pins each id to its text
+  crumbs.mjs      build and list the bank
+  install.mjs     installer and uninstaller
+  test.mjs        bank and installer tests
+  learnings.md    dated log of changes to the bank
+  references/     keys, context, building blocks, and workflow notes
+docs/specs/       design notes
 ```
-
-## Design notes
-
-- **The hook fails silent.** Any error — corrupt bank, missing file, bad JSON — exits 0 with no output. A broken coach must never block a session start.
-- **`resume` and `compact` are deliberately not hooked.** Continuing a session shouldn't re-charge you tokens or repeat tips you just saw.
-- **The references are loaded on demand only.** The always-on cost is the digest and the tips; the deep material costs nothing until Claude needs it.
 
 ## Author
 
-Hamed Nasrabadi. Tips distilled from my own Claude Code course material.
+Hamed Nasrabadi. Crumbs distilled from my Claude Code course material and checked against the official documentation.
