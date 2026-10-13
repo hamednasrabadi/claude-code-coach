@@ -1,7 +1,7 @@
 # Try crumbs: design
 
 Date: 2026-10-13
-Status: draft, awaiting review
+Status: approved, revised after the docs check on 2026-10-13
 
 ## Problem
 
@@ -69,71 +69,106 @@ Every crumb must pass all of these:
 
 ## The bank
 
-77 crumbs: 46 rewritten from the original 55 tips, 31 new. Nine original tips were dropped or merged because they had no single action, duplicated a built-in tip, or could not be verified. The working draft is `docs/crumbs-draft.json`; it replaces `tips.json` during implementation.
+77 crumbs: 46 rewritten from the original 55 tips, 31 new. Nine original tips were dropped or merged because they had no single action, duplicated a built-in tip, or could not be verified.
 
 Format mix: 27 command, 13 when, 11 key, 11 fact, 9 goal, 6 question.
 
+Each crumb also has a `level`:
+
+| Level | Meaning | Priority sent to Claude Code |
+|---|---|---|
+| 1 | basics every user needs | `2` |
+| 2 | everyday habits and commands | `0` |
+| 3 | advanced or niche | `-2` |
+
 ## Mechanism
 
-Claude Code's documented `spinnerTipsOverride` setting supplies the line. No model, no context injection.
+Claude Code's documented `spinnerTipsOverride` setting supplies the line. No hook, no model, no context injection, no state of our own.
+
+### What Claude Code already does
+
+From the settings reference (v2.1.247 or later):
+
+- `tipsFile` is a JSON file holding an array of tip entries, up to 256 KB and 200 tips.
+- Each entry has an `id`, `text`, `cooldownSessions` (sessions to wait before showing it again), and `priority`.
+- Claude Code keeps each tip's show history by `id`. It shows the tip that has gone unshown longest; `priority` breaks ties, higher first.
+- Custom tips share the rotation with the built-in tips unless `excludeDefault` is `true`.
+- The file is read once per process, at startup.
+- If the file is missing or every entry is invalid, Claude Code falls back to its built-in tips.
+
+That is a scheduler already. The first version of this skill ran its own spaced-repetition scheduler in a `SessionStart` hook; this design deletes it and lets Claude Code rotate a static bank.
+
+### Effect on learning
+
+- **Curriculum order.** At first every crumb is equally unshown, so priority decides: basics first, advanced last.
+- **Repetition.** After a crumb is shown, `cooldownSessions: 3` keeps it away for three sessions. Then it competes again by time unshown, so every crumb comes back after the rest of the rotation has had its turn.
+- **Trade-off.** Expanding intervals (2, 6, 16, 45 days) are gone. Repetition is a steady cycle instead. In exchange there is nothing to run, nothing to break, and nothing to reset.
+- **Mix with built-in tips.** 77 crumbs share the rotation with Claude Code's built-in tips, so most lines are crumbs, and new built-in tips about new features still appear.
+
+### Fixed ids carry the history
+
+Claude Code's show history is keyed by `id`. That is the same reason the fixed text rule exists: an id must never be reused for different text.
+
+### Files
+
+| File | Role |
+|---|---|
+| `crumbs.json` | source of truth: `id`, `text`, `topic`, `format`, `level`, `surface`, `src` |
+| `try-tips.json` | generated, committed: only `id`, `text`, `cooldownSessions`, `priority`, which is what Claude Code reads |
+| `crumbs.lock` | committed `id` → text hash, to enforce the fixed text rule |
+| `crumbs.mjs` | `build` regenerates `try-tips.json` and records new ids in the lock; `list` prints the bank |
+
+`try-tips.json` is committed rather than built at install time, so `git pull` updates the crumbs with no reinstall. A test fails if it drifts from `crumbs.json`.
+
+The generated file carries only documented fields. Extra metadata in a tip entry is not documented, and an invalid entry is silently dropped, so the metadata stays in `crumbs.json`.
 
 ### Install (one time)
 
-`node install.mjs` does three things and nothing else is ever needed:
+`node install.mjs`:
 
-1. Links the skill into `~/.claude/skills/`, as today.
-2. Registers the `SessionStart` hook for `startup` and `clear`, as today.
-3. Adds to `~/.claude/settings.json`:
+1. Links the skill into `~/.claude/skills/` (a junction on Windows, a symlink elsewhere).
+2. Sets in `~/.claude/settings.json`:
 
    ```json
-   "spinnerTipsOverride": { "label": "Try", "tipsFile": "<skill dir>/try-tips.json" }
+   "spinnerTipsOverride": { "label": "Try", "tipsFile": "<repo>/claude-code-coach/try-tips.json" }
    ```
 
-   `excludeDefault` stays unset, so Claude Code's own tips keep appearing and the user stays current with new features.
+   Any `tips` the user already has are kept. `excludeDefault` is not touched.
+3. Removes the `SessionStart` hook entries the first version registered, if present.
+4. Checks the result: the tip file parses, every entry is valid, and the Claude Code version is 2.1.247 or later. It warns if `spinnerTipsEnabled` is `false`, because that hides every tip.
 
-The installer backs up settings first, is idempotent, preserves progress, and verifies the result by running the hook once. If `spinnerTipsEnabled` is `false`, the installer says so, because the crumbs would be hidden.
+The installer backs up settings once before writing, is idempotent, and refuses to overwrite a `tipsFile` that points somewhere else.
 
-### Each session
-
-The `SessionStart` hook runs `coach.mjs session`, which:
-
-1. Picks 3 crumbs with the existing scheduler: 2 new and at least 1 review, one per topic, on Leitner intervals of 0, 2, 6, 16, 45, and 120 days.
-2. Writes them to `try-tips.json` with a priority above the built-in tips, so the slot shows mostly crumbs and sometimes a built-in tip.
-3. Prints nothing to Claude's context.
-
-A crumb only advances its box when it has been written for a session. The spinner may not show every crumb in a short session; that is accepted, and a crumb that was written but unseen still counts as shown. This keeps the scheduler simple and the hook fast.
+After that, nothing is ever needed. New sessions pick the crumbs up on their own.
 
 ### Uninstall
 
-`node install.mjs --uninstall` removes the link, the hook entries, and the `spinnerTipsOverride` key, leaving all other settings untouched.
-
-### Failure behavior
-
-The hook stays silent and exits 0 on any error, as today. If the tip file is missing or broken, Claude Code shows its built-in tips and the session is unaffected.
+`node install.mjs --uninstall` removes the link, removes `label` and `tipsFile` if they are ours, and deletes `spinnerTipsOverride` if nothing else is left in it. All other settings stay untouched.
 
 ## The skill
 
-`SKILL.md` stays, for depth and maintenance only: "I already know that one" makes Claude run `coach.mjs know <id>`; "explain that tip" makes Claude load the matching reference. The hardcoded personal paths to `C:\NewDrive\Claudes\Claude-mastery` are removed so the skill works on any machine. `digest.md` and the context contract in `coach.mjs` are deleted.
+`SKILL.md` stays, for depth and maintenance. It points Claude at the four reference files for how-to questions, and explains how to add a crumb. The hardcoded personal paths to the author's course material are removed. `coach.mjs`, `tips.json`, `digest.md`, and `test-schedule.mjs` are deleted.
 
-## Open items to verify during implementation
+## Verified so far
 
-These are not documented and must be tested before the design is final:
+- Inline `tips` with a custom `label` render as `Try: …` in the terminal, and reload mid-session (2026-10-13).
+- `tipsFile` schema, read-once behavior, priority, and cooldown semantics are documented in the settings reference.
 
-1. **`tipsFile` format.** The docs give the size limit, not the schema. Test whether it takes the same array as `tips`.
-2. **Reload of `tipsFile`.** Inline `tips` reload mid-session (confirmed on 2026-10-13). Test whether a rewritten `tipsFile` is re-read without a restart. Fallback: the hook writes inline `tips` into `settings.json` instead.
-3. **Priority mixing.** Test whether priority above zero still lets built-in tips appear. Fallback: set `excludeDefault: true` in most sessions and `false` in every fourth.
-4. **Desktop app.** The docs do not say whether the Claude Code desktop app shows spinner tips. Test it. If it does not, decide on an app fallback separately; the terminal design does not change.
+## Still open
+
+- **Desktop app.** The docs do not say whether the Claude Code desktop app shows spinner tips. The README states the terminal is supported and the app depends on Claude Code showing spinner tips there.
+- **Built-in tip count.** The share of crumbs in the rotation depends on how many built-in tips Claude Code has. If built-in tips turn out to dominate, revisit `excludeDefault`.
 
 ## Testing
 
-`test-schedule.mjs` is updated to check:
+`test.mjs` checks:
 
-- Every crumb has `id`, `topic`, `format`, `text`, and `src`, and ids are unique.
+- Every crumb has all fields, ids are unique, and the bank is at most 200.
 - Every crumb is 70 to 110 characters, and questions are at most one in eight.
-- Text for an id matches its hash in `crumbs.lock`.
-- The 13-session scheduling simulation still holds: spacing, review slot, topic diversity.
-- The generated `try-tips.json` is valid and contains exactly the picked crumbs.
+- Every crumb's text matches its hash in `crumbs.lock`.
+- `try-tips.json` matches what `crumbs.mjs build` would generate.
+- The installer, against a temporary config directory: install, reinstall with no change, other settings preserved, legacy hook removed, foreign `tipsFile` refused, uninstall leaves nothing behind.
 
 ## Naming
 
-The line label is `Try`. The repo and skill are still named `claude-code-coach`; a matching name is decided before the README rewrite.
+The line label is `Try`. The repo and skill keep the name `claude-code-coach`: the name describes what the project is, the label describes what each line asks you to do, and renaming the published repo would break existing links.
