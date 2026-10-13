@@ -34,7 +34,6 @@
   "read-the-diff": "59bf75b4c1e024ec",
   "commit-often": "1209c9561ca0519f",
   "worktree-for-risky": "4f2b9271ae9d85c5",
-  "two-corrections-stop": "9b050e18dc70d36f",
   "usage-gauge": "ebd1511329e47c82",
   "specific-not-louder": "3383083c38eba04f",
   "show-an-example": "bb98c42e12f02510",
@@ -75,5 +74,7 @@
   "import-config": "1d0b7bad7a317c41",
   "remote-control": "38fc844efb7ee086",
   "config-set": "add7cb7a51b3cd29",
-  "bare-ci": "23d92471f99d14e0"
+  "bare-ci": "23d92471f99d14e0",
+  "two-corrections-clear": "acfb5a649d443fd5",
+  "two-corrections-stop": "9b050e18dc70d36f"
 }

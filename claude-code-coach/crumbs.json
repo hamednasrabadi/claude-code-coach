@@ -258,7 +258,7 @@
     "format": "when",
     "level": 2,
     "surface": "both",
-    "src": "course material"
+    "src": "https://code.claude.com/docs/en/best-practices"
   },
   {
     "id": "re-ask-fresh",
@@ -285,7 +285,7 @@
     "format": "when",
     "level": 1,
     "surface": "both",
-    "src": "course material"
+    "src": "https://code.claude.com/docs/en/best-practices"
   },
   {
     "id": "read-the-diff",
@@ -315,13 +315,13 @@
     "src": "https://code.claude.com/docs/en/worktrees"
   },
   {
-    "id": "two-corrections-stop",
-    "text": "When a correction hasn't landed twice, press Esc twice to rewind and ask again from scratch",
+    "id": "two-corrections-clear",
+    "text": "When two corrections haven't fixed it, run /clear and start over with a more specific prompt",
     "topic": "recovery",
     "format": "when",
     "level": 2,
     "surface": "both",
-    "src": "https://code.claude.com/docs/en/checkpointing"
+    "src": "https://code.claude.com/docs/en/best-practices"
   },
   {
     "id": "usage-gauge",
@@ -339,7 +339,7 @@
     "format": "goal",
     "level": 1,
     "surface": "both",
-    "src": "course material"
+    "src": "https://code.claude.com/docs/en/best-practices"
   },
   {
     "id": "show-an-example",
@@ -348,7 +348,7 @@
     "format": "fact",
     "level": 2,
     "surface": "both",
-    "src": "course material"
+    "src": "https://code.claude.com/docs/en/best-practices"
   },
   {
     "id": "give-the-because",

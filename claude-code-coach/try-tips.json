@@ -210,8 +210,8 @@
     "priority": 0
   },
   {
-    "id": "two-corrections-stop",
-    "text": "When a correction hasn't landed twice, press Esc twice to rewind and ask again from scratch",
+    "id": "two-corrections-clear",
+    "text": "When two corrections haven't fixed it, run /clear and start over with a more specific prompt",
     "cooldownSessions": 3,
     "priority": 0
   },
